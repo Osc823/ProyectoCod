@@ -1,37 +1,55 @@
 import { Router } from "express";
-import { CartManager } from "../cartManager/Cart.js";
+import cartDao from "../daos/dbManagerCart/cart.dao.js";
 
 const routerCarts = Router();
-const cartManager = new CartManager("./carrito.json")
 
-routerCarts.post('/',async(req, res) => {
-    const response = await cartManager.createCart();
+// Crear un nuevo carrito
+routerCarts.post("/", async (req, res) => {
+  try {
+    const newCart = await cartDao.createCart();
     res.json({
-        message :"Nuevo carrito creado con éxito", response
-    })
-})
+      message: "Nuevo carrito creado con éxito",
+      cart: newCart,
+    });
+  } catch (error) {
+    console.error("Error al crear un carrito:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-routerCarts.get('/:cid', async(req, res) => {
-    const {cid} = req.params
+// Obtener información de un carrito por su ID
+routerCarts.get("/:cid", async (req, res) => {
+  const { cid } = req.params;
+  try {
     if (cid) {
-        const response = await cartManager.getCartById(cid)
-        return res.json(response)
+      const cart = await cartDao.getCartById(cid);
+      if (!cart) {
+        return res.status(404).json({ error: "Carrito no encontrado" });
+      }
+      res.json(cart);
+    } else {
+      res.status(400).json({ error: "Falta el ID del carrito" });
     }
-    res.json({
-        Error :"No Id"
-    })
-})
+  } catch (error) {
+    console.error(`Error al obtener el carrito con ID ${cid}:`, error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-routerCarts.post('/:cid/product/:pid', async(req, res) => {
-    const {cid, pid} = req.params
-    console.log('Loque me llega', cid, pid);
-    if (cid) {
-        const response = await cartManager.addToCart(cid, pid)
-        return res.json(response)
+// Agregar un producto a un carrito por su ID
+routerCarts.post("/:cid/product/:pid", async (req, res) => {
+  const { cid, pid } = req.params;
+  try {
+    if (cid && pid) {
+      const response = await cartDao.addToCart(cid, pid);
+      res.json(response);
+    } else {
+      res.status(400).json({ error: "Falta el ID del carrito o del producto" });
     }
-    res.json({
-        Error :"No Id"
-    })
-})
+  } catch (error) {
+    console.error(`Error al agregar producto al carrito ${cid}:`, error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-export default routerCarts
+export default routerCarts;

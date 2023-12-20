@@ -1,20 +1,25 @@
-import { Schema, model } from "mongoose";
+import { productModel } from "../../models/product.model.js";
 
-const productSchema = new Schema({
-  title: { type: String, required: true },
+class ProductDao {
+  async getAllProducts() {
+    return await productModel.find();
+  }
 
-  description: { type: String, required: true },
+  async getProductById(id) {
+    return await productModel.findById(id);
+  }
 
-  price: { type: Number, required: true },
+  async createProduct(product) {
+    return await productModel.create(product);
+  }
 
-  thumbnail: { type: String, required: true },
+  async updateProduct(id, product) {
+    return await productModel.findByIdAndUpdate(id, product);
+  }
 
-  code: { type: String, required: true },
+  async deleteProduct(id) {
+    return await productModel.findByIdAndDelete(id);
+  }
+}
 
-  stock: { type: Number, required: true },
-});
-
-const productModel = model("products", productSchema);
-
-export { productModel };
-
+export default new ProductDao();
