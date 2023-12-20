@@ -18,12 +18,24 @@ class ProductManager {
     }
   }
 
-  async getProducts() {
+  getProducts() {
     return this.products;
   }
 
-  async saveFile() {
+  async saveFile(productsData) {
+    if (!productsData) {
+      return console.log('No hay productos aun');
+    }
+    const existProducts = this.products.find((p) => p.id === productsData.id)  
+    if (existProducts) {
+      console.log("El post ya existe");
+      throw Error(`Post with id ${productsData.id} already exists`);
+    }
+    const lastProduct = this.products[this.products.length-1]
+    const addId = lastProduct.id + 1
+    const newProduct = {id: addId, ...productsData}
     try {
+      this.products.push(newProduct)
       await fs.promises.writeFile(
         this.path,
         JSON.stringify(this.products, null, "\t")

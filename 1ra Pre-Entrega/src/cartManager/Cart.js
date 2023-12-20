@@ -65,15 +65,14 @@ class CartManager {
       console.log("Error: Carrito no encontrado.");
       return;
     }
-    console.log('carros',cart.products, 'idprodyct', productId.toString());
     //Si esta creado buscamos el producto en el carro
     const productIndex = await cart.products.findIndex(
       (p) => p.idProduct == productId
     );
-    console.log('Buenas', productIndex);
+   
     //Si el producto no esta lo agregamos, y si esta le aumentamos la cantidad
     if (productIndex !== -1) {
-      console.log('Estoy aqui!');
+     
       // Producto ya existe en el carrito, incrementar cantidad
       cart.products[productIndex].quantity++;
     } else {

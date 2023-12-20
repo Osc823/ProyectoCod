@@ -1,7 +1,7 @@
 [
 	{
 		"id": "1",
-		"title": "Motos ASUS Gaming",
+		"title": "Moto ASUS Gaming",
 		"description": "Raton LED Full HD de 27 pulgadas con frecuencia de actualización de 144Hz",
 		"price": 1799000,
 		"thumbnail": "Imagen.url",
@@ -128,5 +128,14 @@
 		"code": "Asds166",
 		"status": true,
 		"stock": "true"
+	},
+	{
+		"id": 14,
+		"title": "Hola",
+		"description": "Sisissi",
+		"price": "025",
+		"thumbnail": "Diploma.pdf",
+		"code": "AZS-541",
+		"stock": "2"
 	}
 ]
