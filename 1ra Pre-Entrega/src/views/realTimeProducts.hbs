@@ -1,17 +1,72 @@
-<div>
+<div class="form-container">
     <h1>Crear productos en tiempo real</h1>
     <a href="/">Inicio</a>
     <form>
-        <input type="text" name="title" id="title" placeholder="Titulo">
-        <input type="text" name="description" id="description" placeholder="Descripcion">
-        <input type="number" name="price" id="price" placeholder="Precio">
-        <input type="file" name="thumbnail" id="thumbnail" placeholder="Ingrese imagen">
-        <input type="text" name="code" id="code" placeholder="AZS-152">
-        <input type="number" name="stock" id="stock" placeholder="Stock "> 
-        <input type="submit" value="Send">
+      <input type="text" name="title" id="title" placeholder="Titulo">
+      <input type="text" name="description" id="description" placeholder="Descripcion">
+      <input type="number" name="price" id="price" placeholder="Precio">
+      <input type="file" name="thumbnail" id="thumbnail" placeholder="Ingrese imagen">
+      <input type="text" name="code" id="code" placeholder="AZS-152">
+      <input type="number" name="stock" id="stock" placeholder="Stock "> 
+      <input type="submit" value="Send">
     </form>
-    <div id="productsRealTime"></div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js"></script>
 </div>
+
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .form-container h1 {
+      margin-bottom: 20px;
+    }
+
+    .form-container a {
+      display: block;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    .form-container form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .form-container form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    .form-container form input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #productsRealTime {
+      margin-top: 20px;
+    }
+  </style>

@@ -16,6 +16,11 @@ Swal.fire({
   socket.emit("inicio", user);
 });
 
+socket.on("message", (data) => {
+  const log = document.querySelector("#messages");
+  log.innerHTML += `<strong>${data.username}</strong>: ${data.messages} <br />`;
+});
+
 chatbox.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     socket.emit("message", {
@@ -34,17 +39,4 @@ socket.on("connected", (data) => {
       position: "top-right",
     });
   }
-});
-
-socket.on("messages", (data) => {
-  const log = document.querySelector("#messages");
-  let messages = "";
-
-  data.forEach((message) => {
-    messages += `<strong>${message.user}</strong>: ${message.message} <br />`;
-  });
-
-  log.innerHTML = messages;
-
-  // console.log(data);
 });

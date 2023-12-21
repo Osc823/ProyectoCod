@@ -22,9 +22,9 @@ class MessageDao {
   }
 
   // Crear un nuevo mensaje
-  async createMessage(username, message) {
+  async createMessage({user, message}) {
     try {
-      return await messageModel.create({ username, messages: message });
+      return await messageModel.create({ username: user, messages: message });
     } catch (error) {
       console.error("Error al crear mensaje:", error.message);
       throw error;

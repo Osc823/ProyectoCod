@@ -1,13 +1,54 @@
 <div>
-  <div>
-    <input type="text" id="chatbox" />
-  </div>
+  <a href="/">Inicio</a>
+  <div class="chat-container">
+    <div>
+      <input type="text" id="chatbox" placeholder="Escribe tu mensaje..." />
+    </div>
 
-  <div>
-    <p id="messages"></p>
+    <div>
+      <p id="messages"></p>
+    </div>
   </div>
 
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/chat.js"></script>
 </div>
+ <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .chat-container #chatbox {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    .chat-container #messages {
+      text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .chat-container #messages strong {
+      color: #007bff;
+    }
+  </style>

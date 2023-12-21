@@ -1,9 +1,81 @@
-<div>
-    <h1>Productos en tiempo real</h1>
-    <a href="/realTimeProducts">Crear Producto</a>
-    <a href="/chat">Chat En vivo</a>
-    <div id="productsRealTime2"></div>
+<!-- home.hbs -->
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/home.js"></script>
+<div>
+  <h1>Productos en tiempo real</h1>
+  <a href="/realTimeProducts">Crear Producto</a>
+  <a href="/chat">Chat En vivo</a>
+
+  <table>
+    <tr>
+      <th>Titulo</th>
+      <th>Descripcion</th>
+      <th>Precio</th>
+      <th>Imagen</th>
+      <th>Codigo</th>
+      <th>Stock</th>
+      <th>Acciones</th>
+    </tr>
+    <tbody id="productsRealTime2"></tbody>
+  </table>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/home.js"></script>
 </div>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  div {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  h1 {
+    color: #007bff;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>

@@ -6,6 +6,8 @@ import __dirname from "./dirname.js";
 import mongoose from "mongoose";
 import { password, PORT, db_name } from "./env.js";
 import productDao from "./daos/dbManagerProduct/product.dao.js";
+import messageDao from "./daos/dbManagerMessage/message.dao.js";
+
 
 //Socket Server
 const app = express();
@@ -53,32 +55,45 @@ app.use(express.static(`${__dirname}/public`));
 app.use(router);
 
 
-const messages = [];
+
 //Socket communication
 io.on("connection", async (socket) => {
   console.log("Nuevo cliente conectado");
 
+  // Emitir todos los mensajes y productos al cliente que se acaba de conectar
+  const allMessages = await messageDao.getMessages();
+  const allProducts = await productDao.getAllProducts();
+
+  socket.emit("products", allProducts);
+  socket.emit("messages", allMessages);
+
   socket.on("product_send", async (data) => {
     try {
-      await productDao.saveFile(data);
-
-      socket.emit("products");
+      await productDao.createProduct(data);
+      // Obtener la lista actualizada de productos después de la creación
+      const updatedProducts = await productDao.getAllProducts();
+      // Emitir la lista actualizada a todos los clientes
+      io.emit("products", updatedProducts);
     } catch (error) {
       console.log(error);
     }
   });
 
-  socket.on("message", (data) => {
-    console.log(data);
-    messages.push(data);
-    io.emit("messages", messages);
+  socket.on("message", async (data) => {
+    try {
+      const newMessage = await messageDao.createMessage(data);
+      // Emitir el nuevo mensaje a todos los clientes, incluido el remitente
+      io.emit("message", newMessage);
+    } catch (error) {
+      console.error("Error al guardar el mensaje en la base de datos:", error);
+    }
   });
 
-  socket.on("inicio", (data) => {
-    io.emit("messages", messages);
+  socket.on("inicio", async (data) => {
+    // Emitir evento "connected" a todos los clientes excepto al remitente
     socket.broadcast.emit("connected", data);
   });
 
-  socket.emit("messages", messages);
-  socket.emit("products", productDao.getAllProducts());
+  // Emitir todos los mensajes al cliente recién conectado
+  socket.emit("messages", allMessages);
 });
