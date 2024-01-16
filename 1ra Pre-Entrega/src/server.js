@@ -7,13 +7,18 @@ import mongoose from "mongoose";
 import { password, PORT, db_name } from "./env.js";
 import productDao from "./daos/dbManagerProduct/product.dao.js";
 import messageDao from "./daos/dbManagerMessage/message.dao.js";
+import Handlebars from "handlebars";
+import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
 
+import MongoStore from 'connect-mongo'
+import session from 'express-session'
 
 //Socket Server
 const app = express();
 
+const MONGO_URL = `mongodb+srv://osbussiness93:${password}@cluster0.l8galgu.mongodb.net/${db_name}?retryWrites=true&w=majority`
 
-mongoose.connect(`mongodb+srv://osbussiness93:${password}@cluster0.l8galgu.mongodb.net/${db_name}?retryWrites=true&w=majority`)
+mongoose.connect(MONGO_URL)
 .then(() => {
   console.log('DB Conect');
 })
@@ -41,6 +46,7 @@ app.engine(
     extname: ".hbs",
     // Plantilla principal
     defaultLayout: "main",
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
 );
 
@@ -50,6 +56,30 @@ app.set("views", `${__dirname}/views`);
 
 //public
 app.use(express.static(`${__dirname}/public`));
+
+
+// Configuracion de Session
+app.use(session(
+  {
+      //ttl: Time to live in seconds,
+      //retries: Reintentos para que el servidor lea el archivo del storage.
+      //path: Ruta a donde se buscará el archivo del session store.
+      // Usando --> session-file-store
+      // store: new fileStore({ path: "./sessions", ttl: 15, retries: 0 }),
+
+      // Usando --> connect-mongo
+      store: MongoStore.create({
+          mongoUrl: MONGO_URL,
+          //mongoOptions --> opciones de confi para el save de las sessions
+          mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+          ttl: 10 * 60
+      }),
+
+      secret: "coderS3cr3t",
+      resave: false, // guarda en memoria
+      saveUninitialized: true //lo guarda a penas se crea
+  }
+))
 
 //Rutas
 app.use(router);

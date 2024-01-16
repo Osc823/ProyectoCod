@@ -3,6 +3,8 @@ import routerProducts from "./products.router.js";
 import routerCarts from "./carts.router.js";
 import viewsRouter from "./views.router.js";
 import routerMessages from "./message.router.js";
+import routerUsers from "./users.router.js";
+import routerSession from "./sessions.router.js";
 
 const router = Router();
 
@@ -10,6 +12,7 @@ router.use('/', viewsRouter)
 router.use('/api/products', routerProducts)
 router.use('/api/carts', routerCarts)
 router.use('/api/messages', routerMessages)
-
+router.use('/users', routerUsers)
+router.use('/api/sessions', routerSession)
 
 export default router;
