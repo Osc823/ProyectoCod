@@ -1,39 +1,54 @@
 import { Router } from 'express';
 import {userModel} from '../models/user.model.js';
+import { createHash, isValidPassword } from '../dirname.js'
+import passport from 'passport';
 
-const routerSession = Router();
+const router = Router();
+
+/*=============================================
+=                   Passport Github           =
+=============================================*/
+router.get("/github", passport.authenticate('github', { scope: ['user:email'] }), async (req, res) => {
+    { }
+})
+
+router.get("/githubcallback", passport.authenticate('github', { failureRedirect: '/github/error' }), async (req, res) => {
+    const user = req.user;
+    req.session.user = {
+        name: `${user.first_name} ${user.last_name}`,
+        email: user.email,
+        age: user.age
+    };
+    req.session.admin = true;
+    res.redirect("/home")
+})
+
+
+
+
+/*=============================================
+=                   Passport Local            =
+=============================================*/
 
 // Register
-routerSession.post('/register', async (req, res) => {
-    const { first_name, last_name, email, age, password } = req.body;
+router.post('/register', passport.authenticate('register', {
+    failureRedirect: 'api/session/fail-register'
+}), async (req, res) => {
     console.log("Registrando usuario:");
-    console.log(req.body);
-
-    //Validamos si el user existe en la DB
-    const exist = await userModel.findOne({ email });
-    if (exist) {
-        return res.status(400).send({ status: 'error', message: "Usuario ya existe!" })
-    }
-
-    const user = {
-        first_name,
-        last_name,
-        email,
-        age,
-        password 
-    }
-
-    const result = await userModel.create(user);
-    res.send({ status: "success", message: "Usuario creado con extito con ID: " + result.id });
+    res.status(201).send({ status: "success", message: "Usuario creado con extito." });
 })
 
 
 // Login
-routerSession.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    const user = await userModel.findOne({ email, password }); 
+router.post('/login', passport.authenticate('login',
+    {
+        failureRedirect: 'api/session/fail-login'
+    }
+), async (req, res) => {
+    console.log("User found to login:");
 
-    if (!user) return res.status(401).send({ status: 'error', error: "Incorrect credentials" })
+    const user = req.user;
+    console.log(user);
 
     req.session.user = {
         name: `${user.first_name} ${user.last_name}`,
@@ -44,4 +59,16 @@ routerSession.post('/login', async (req, res) => {
     res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
 })
 
-export default routerSession;
+
+router.get("/fail-register", (req, res) => {
+    res.status(401).send({ error: "Failed to process register!" });
+});
+
+router.get("/fail-login", (req, res) => {
+    res.status(401).send({ error: "Failed to process login!" });
+});
+
+
+
+
+export default router;

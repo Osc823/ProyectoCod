@@ -13,6 +13,10 @@ import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
 
+// Passport Imports
+import passport from 'passport';
+import initializePassport from './config/passport.config.js'
+
 //Socket Server
 const app = express();
 
@@ -80,6 +84,11 @@ app.use(session(
       saveUninitialized: true //lo guarda a penas se crea
   }
 ))
+
+// Middleware de passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Rutas
 app.use(router);
