@@ -4,6 +4,7 @@ import router from "./routes/main.router.js";
 import handlebars from "express-handlebars";
 import __dirname from "./dirname.js";
 import mongoose from "mongoose";
+import cors from 'cors';
 import { password, PORT, db_name } from "./env.js";
 import productDao from "./daos/dbManagerProduct/product.dao.js";
 import messageDao from "./daos/dbManagerMessage/message.dao.js";
@@ -19,6 +20,7 @@ import initializePassport from './config/passport.config.js'
 
 //Socket Server
 const app = express();
+app.use(cors());
 
 const MONGO_URL = `mongodb+srv://osbussiness93:${password}@cluster0.l8galgu.mongodb.net/${db_name}?retryWrites=true&w=majority`
 
