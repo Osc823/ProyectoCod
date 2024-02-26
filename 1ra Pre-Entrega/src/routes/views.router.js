@@ -44,7 +44,7 @@ viewsRouter.get("/products", async (req, res) => {
       }
     );
     // .sort({ price: 1})
-    console.log('Papasasa',products);
+   
 
     res.render("products", {
       products,

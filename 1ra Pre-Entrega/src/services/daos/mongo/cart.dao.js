@@ -1,7 +1,12 @@
-import { cartModel } from "../../models/cart.model.js";
+import { cartModel } from "../../../models/cart.model.js";
 
 class CartDao {
   // Obtener todos los carritos
+
+  constructor() {
+    console.log("Working students with Database persistence in mongodb");
+}
+
   async getCarts() {
     return cartModel.find();
   }
@@ -61,4 +66,4 @@ class CartDao {
   }
 }
 
-export default new CartDao();
+export default CartDao;

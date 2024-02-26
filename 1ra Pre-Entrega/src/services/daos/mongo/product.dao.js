@@ -1,4 +1,4 @@
-import { productModel } from "../../models/product.model.js";
+import { productModel } from "../../../models/product.model.js";
 
 class ProductDao {
   async getAllProducts() {
@@ -22,4 +22,4 @@ class ProductDao {
   }
 }
 
-export default new ProductDao();
+export default ProductDao;

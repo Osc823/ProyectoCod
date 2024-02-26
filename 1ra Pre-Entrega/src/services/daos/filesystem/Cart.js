@@ -59,7 +59,7 @@ class CartManager {
 
     //Buscamos el carro para ver si esta creado o no
     const cart = this.carts.find((c) => c.id == cartId);
-    console.log('Hola',cart);
+  
 
     if (!cart) {
       console.log("Error: Carrito no encontrado.");

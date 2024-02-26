@@ -23,7 +23,7 @@ form.addEventListener("submit", (e) => {
 
 socket.on("products", (data) => {
     const products = document.querySelector("#productsRealTime");
-    console.log('Numeros', data);
+
     products.innerHTML = data.map((product) => {
         return `
         <p>

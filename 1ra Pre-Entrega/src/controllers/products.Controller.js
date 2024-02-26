@@ -1,14 +1,17 @@
-import productDao from "../daos/dbManagerProduct/product.dao.js";
+//Factory
+import  productsService  from "../services/daos/mongo/product.dao.js";
+
+// import productDao from "../services/daos/mongo/product.dao.js";
 
 const allProducts = async (req, res) => {
   try {
     const { limit } = req.query;
     if (limit >= 1) {
-      const products = await productDao.getAllProducts();
+      const products = await productsService.getAllProducts();
       const productWithLimit = products.slice(0, limit);
       res.json(productWithLimit);
     } else {
-      const products = await productDao.getAllProducts();
+      const products = await productsService.getAllProducts();
       res.json(products);
     }
   } catch (error) {
@@ -20,7 +23,7 @@ const productById = async (req, res) => {
   try {
     const { pid } = req.params;
     if (pid) {
-      const response = await productDao.getProductById(pid);
+      const response = await productsService.getProductById(pid);
       res.json(response);
     }
   } catch (error) {
@@ -30,7 +33,7 @@ const productById = async (req, res) => {
 
 const createNewProduct = async (req, res) => {
   try {
-    await productDao.createProduct(req.body);
+    await productsService.createProduct(req.body);
     res.json({ message: `Creado con exito` });
   } catch (error) {
     console.error(error);
@@ -53,7 +56,7 @@ const updateProductById = async (req, res) => {
     }
 
     // Obtener el resultado de la actualización
-    const result = await productDao.updateProduct(pid, req.body);
+    const result = await productsService.updateProduct(pid, req.body);
 
     res.json(result);
   } catch (error) {
@@ -68,8 +71,7 @@ const deleteProductById = async (req, res) => {
   try {
     const { pid } = req.params;
     if (pid) {
-      console.log("Numero que me llega", pid);
-      const response = await productDao.deleteProduct(pid);
+      const response = await productsService.deleteProduct(pid);
       res.json(response);
     }
   } catch (error) {

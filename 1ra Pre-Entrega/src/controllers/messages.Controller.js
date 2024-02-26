@@ -1,4 +1,4 @@
-import messageDao from "../daos/dbManagerMessage/message.dao.js";
+import messageDao from "../services/daos/mongo/message.dao.js";
 
 const getAllMessages = async (req, res) => {
     try {

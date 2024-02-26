@@ -95,9 +95,7 @@ class ProductManager {
   }
 
   async updateProduct(id, updateProduct) {
-    console.log('El id que me llega', id);
     const index = this.products.findIndex((p) => p.id == id);
-    console.log('el index', index);
     if (index !== -1) {
       this.products[index] = { ...this.products[index], ...updateProduct, id };
       try {

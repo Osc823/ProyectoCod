@@ -7,7 +7,7 @@ const loginPassportLocal = async (req, res) => {
     console.log("User found to login:");
 
     const user = req.user;
-    console.log(user);
+
 
     req.session.user = {
         name: `${user.first_name} ${user.last_name}`,

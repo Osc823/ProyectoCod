@@ -1,9 +1,13 @@
-import cartDao from "../daos/dbManagerCart/cart.dao.js";
+//Factory
+import cartsService from "../services/factory.js";
+
+// import cartDao from "../services/daos/mongo/cart.dao.js";
+
 
 
 const postCart = async (req, res) => {
     try {
-      const newCart = await cartDao.createCart();
+      const newCart = await cartsService.createCart();
       res.json({
         message: "Nuevo carrito creado con éxito",
         cart: newCart,
@@ -17,7 +21,7 @@ const cartById =  async (req, res) => {
     const { cid } = req.params;
     try {
       if (cid) {
-        const cart = await cartDao.getCartById(cid);
+        const cart = await cartsService.getCartById(cid);
         if (!cart) {
           return res.status(404).json({ error: "Carrito no encontrado" });
         }
@@ -34,7 +38,7 @@ const addProductCart = async (req, res) => {
     const { cid, pid } = req.params;
     try {
       if (cid && pid) {
-        const response = await cartDao.addToCart(cid, pid);
+        const response = await cartsService.addToCart(cid, pid);
         res.json(response);
       } else {
         res.status(400).json({ error: "Falta el ID del carrito o del producto" });

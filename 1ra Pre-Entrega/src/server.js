@@ -3,16 +3,15 @@ import { Server } from "socket.io";
 import router from "./routes/main.router.js";
 import handlebars from "express-handlebars";
 import __dirname from "./dirname.js";
-import mongoose from "mongoose";
 import cors from 'cors';
-import { password, PORT, db_name } from "./env.js";
-import productDao from "./daos/dbManagerProduct/product.dao.js";
-import messageDao from "./daos/dbManagerMessage/message.dao.js";
+import productDao from "./services/daos/mongo/product.dao.js";
+import messageDao from "./services/daos/mongo/message.dao.js";
 import Handlebars from "handlebars";
 import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
-
+import config from "./config/config.js";
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
+import MongoSingleton from './config/mongodb-singleton.js';
 
 // Passport Imports
 import passport from 'passport';
@@ -22,19 +21,24 @@ import initializePassport from './config/passport.config.js'
 const app = express();
 app.use(cors());
 
-const MONGO_URL = `mongodb+srv://osbussiness93:${password}@cluster0.l8galgu.mongodb.net/${db_name}?retryWrites=true&w=majority`
 
-mongoose.connect(MONGO_URL)
-.then(() => {
-  console.log('DB Conect');
-})
-.catch((error)=> {
-  console.log('Hubo un error');
-})
+const MONGO_URL = config.mongoUrl
+
+// Esta configuracion solo se usa si NO estoy usando una FACTORY
+const mongoInstance = async () => {
+  try {
+      await MongoSingleton.getInstance();
+  } catch (error) {
+      console.error(error);
+      process.exit();
+  }
+};
+mongoInstance();
 
 
-const httpServer = app.listen(PORT, () => {
-  console.log(`Server listened on port ${PORT}`);
+
+const httpServer = app.listen(config.port, () => {
+  console.log("Servidor escuchando por el puerto: " + config.port);
 });
 
 //Instancia websocket
@@ -96,23 +100,23 @@ app.use(passport.session());
 app.use(router);
 
 
-
+const productsSer = new productDao();
 //Socket communication
 io.on("connection", async (socket) => {
   console.log("Nuevo cliente conectado");
 
   // Emitir todos los mensajes y productos al cliente que se acaba de conectar
   const allMessages = await messageDao.getMessages();
-  const allProducts = await productDao.getAllProducts();
+  const allProducts = await productsSer.getAllProducts();
 
   socket.emit("products", allProducts);
   socket.emit("messages", allMessages);
 
   socket.on("product_send", async (data) => {
     try {
-      await productDao.createProduct(data);
+      await productsSer.createProduct(data);
       // Obtener la lista actualizada de productos después de la creación
-      const updatedProducts = await productDao.getAllProducts();
+      const updatedProducts = await productsSer.getAllProducts();
       // Emitir la lista actualizada a todos los clientes
       io.emit("products", updatedProducts);
     } catch (error) {
