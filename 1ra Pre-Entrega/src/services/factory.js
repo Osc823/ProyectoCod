@@ -30,13 +30,13 @@ switch (config.persistence) {
 
     case 'file':
         // IMPORTARME le DAO
-        const { default: CartServiceFileSystem } = await import('./daos/filesystem/Cart.js')
-        cartsService = new CartServiceFileSystem
+        const { CartManager } = await import('./daos/filesystem/Cart.js')
+        cartsService = new CartManager("./carrito.json")
         console.log("Servicio de carrito cargado:");
         console.log(cartsService);
 
-        const { default: ProductsServiceFileSystem } = await import('./daos/filesystem/ProductManager.js')
-        productsService = new ProductsServiceFileSystem
+        const { ProductManager } = await import('./daos/filesystem/ProductManager.js')
+        productsService = new ProductManager("./products.json")
         console.log("Servicio de productos cargado:");
         console.log(productsService);
         break;

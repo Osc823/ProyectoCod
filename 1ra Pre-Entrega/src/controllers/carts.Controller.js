@@ -1,8 +1,10 @@
 //Factory
-import cartsService from "../services/factory.js";
+// import cartsService from "../services/factory.js";
+
+//Repository
+import {cartsService} from "../services/service.js"
 
 // import cartDao from "../services/daos/mongo/cart.dao.js";
-
 
 
 const postCart = async (req, res) => {

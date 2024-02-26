@@ -1,4 +1,4 @@
-import { productModel } from "../models/product.model.js";
+import { productModel } from "../services/models/product.model.js";
 
 const login = async (req, res) => {
   res.render("login.hbs");

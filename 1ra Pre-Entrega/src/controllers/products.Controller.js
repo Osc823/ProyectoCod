@@ -1,13 +1,18 @@
 //Factory
-import  productsService  from "../services/daos/mongo/product.dao.js";
+// import  productsService  from "../services/factory.js";
+
+//Repository
+import {productsService} from "../services/service.js"
 
 // import productDao from "../services/daos/mongo/product.dao.js";
 
 const allProducts = async (req, res) => {
+  
   try {
     const { limit } = req.query;
     if (limit >= 1) {
       const products = await productsService.getAllProducts();
+      console.log('Entra aqui?', productsService);
       const productWithLimit = products.slice(0, limit);
       res.json(productWithLimit);
     } else {
@@ -15,6 +20,7 @@ const allProducts = async (req, res) => {
       res.json(products);
     }
   } catch (error) {
+    console.log('Error que me tira', error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
