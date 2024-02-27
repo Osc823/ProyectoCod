@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
   age: Number,
   password: String,
   loggedBy: String,
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const userModel = mongoose.model("users", userSchema);
