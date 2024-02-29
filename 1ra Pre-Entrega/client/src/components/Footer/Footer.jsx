@@ -1,8 +1,15 @@
+import style from "./footer.module.css";
 
 const Footer = () => {
   return (
-    <div>Footer</div>
-  )
-}
+    <footer className={style.footer}>
+      <div
+        className="text-center p-3"
+      >
+        © 2020 Copyright:
+      </div>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
