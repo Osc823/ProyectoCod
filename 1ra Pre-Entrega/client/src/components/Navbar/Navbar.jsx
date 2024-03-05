@@ -2,6 +2,8 @@
 import logo from "../../assets/logo2.png";
 import inicio from "../../assets/usuario.png";
 import style  from "./navbar.module.css"
+import { Link } from "react-router-dom";
+
 
 const Navbar = () => {
   return (
@@ -24,11 +26,13 @@ const Navbar = () => {
           </a>
         </div>
         <div style={{ paddingRight: "25px" }}>
-          <img
-            src={inicio}
-            style={{ width: "30px", height: "30px", borderRadius: "100%" }}
-            alt="Logo"
-          />
+          <Link to={'/login'}>
+            <img
+              src={inicio}
+              style={{ width: "30px", height: "30px", borderRadius: "100%" }}
+              alt="Logo"
+            />
+          </Link>
         </div>
       </div>
     </nav>
