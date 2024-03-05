@@ -1,0 +1,11 @@
+/* En tu archivo carrusel.module.css */
+.carrusel {
+    width: 70%; /* O el ancho deseado, por ejemplo, 300px */
+    height: 500px;
+    object-fit: cover; /* Para asegurar que la imagen ocupe todo el espacio sin deformarse */
+    margin: auto; /* Para centrar horizontalmente */
+    display: block; /* Para alinear verticalmente */
+    margin-top: auto; /* Alinea la imagen hacia abajo para centrar verticalmente */
+    margin-bottom: auto; /* Alinea la imagen hacia arriba para centrar verticalmente */
+  }
+  

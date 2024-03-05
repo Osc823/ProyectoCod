@@ -1,5 +1,5 @@
 // import logo from './tu-logo.png'; // Importa la ruta de tu logo
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo2.png";
 import inicio from "../../assets/usuario.png";
 import style  from "./navbar.module.css"
 
