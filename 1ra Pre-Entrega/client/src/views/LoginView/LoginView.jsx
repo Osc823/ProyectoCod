@@ -54,11 +54,14 @@ const LoginView = () => {
                 required
               />
             </div>
+            
             <div className="d-grid">
               <button type="submit" className="btn btn-primary">
                 Iniciar Sesión
               </button>
-              
+            </div>
+            <div style={{justifyContent:"center", alignItems:"center",  textAlign:"center", marginBottom:"10px", marginTop:"10px"}}>
+              <Link to="/register" style={{textDecorationLine:"none"}}>¿Registrate?</Link>
             </div>
           </form>
         </div>
