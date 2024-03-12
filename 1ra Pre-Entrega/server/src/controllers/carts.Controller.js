@@ -6,6 +6,50 @@ import {cartsService} from "../services/service.js"
 
 // import cartDao from "../services/daos/mongo/cart.dao.js";
 
+const purchaseCart = async(req, res, next) => {
+  const cartId = req.params.cid;
+  const userId = req.user.id; 
+
+  try {
+      // Obtener el carrito y sus productos
+      const cart =  await cartsService.getCartById(cartId).populate('products.product');
+      const productsToPurchase = cart.products;
+
+      // Inicializar arrays para productos comprados y no comprados
+      const purchasedProducts = [];
+      const failedProducts = [];
+
+      // Recorrer los productos del carrito
+      for (const productData of productsToPurchase) {
+          const product = productData.product;
+          const quantity = productData.quantity;
+
+          // Verificar si hay suficiente stock
+          if (product.stock >= quantity) {
+              // Restar el stock y añadir a la lista de productos comprados
+              product.stock -= quantity;
+              await product.save();
+              purchasedProducts.push(product);
+          } else {
+              // Añadir a la lista de productos no comprados
+              failedProducts.push(product._id);
+          }
+      }
+
+      // Generar el ticket
+      const ticket = await TicketService.generateTicket(userId, purchasedProducts);
+
+      // Actualizar el carrito con los productos no comprados
+      cart.products = cart.products.filter(productData => !failedProducts.includes(productData.product));
+      await cart.save();
+
+      // Responder con el resultado
+      res.json({ ticket, failedProducts });
+  } catch (error) {
+      next(error);
+  }
+}
+
 
 const postCart = async (req, res) => {
     try {
@@ -53,5 +97,6 @@ const addProductCart = async (req, res) => {
 export {
     postCart,
     cartById,
-    addProductCart
+    addProductCart,
+    purchaseCart
 }

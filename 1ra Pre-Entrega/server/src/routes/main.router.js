@@ -8,6 +8,8 @@ import routerMessages from "./message.router.js";
 import routerUsers from "./users.router.js";
 import routerSession from "./sessions.router.js";
 import githubLoginViewRouter from './github-login.router.js'
+import emailRouter from './email.router.js';
+
 
 const router = Router();
 
@@ -27,5 +29,8 @@ router.use('/', viewsRouter);
 
 // Rutas para autenticación con Github
 router.use("/github", githubLoginViewRouter);
+
+//Ruta para enviar correos
+router.use("/api/email", emailRouter);
 
 export default router;
