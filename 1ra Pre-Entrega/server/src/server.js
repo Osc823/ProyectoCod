@@ -17,6 +17,8 @@ import MongoSingleton from './config/mongodb-singleton.js';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js'
 
+import { addLogger } from "./config/logger_CUSTOM.js";
+
 //Socket Server
 const app = express();
 app.use(cors());
@@ -97,6 +99,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Rutas
+// **Logger
+app.use(addLogger);
 app.use(router);
 
 

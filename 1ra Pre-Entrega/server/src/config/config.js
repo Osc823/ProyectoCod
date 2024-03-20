@@ -29,5 +29,6 @@ export default {
     adminName: process.env.ADMIN_NAME,
     adminPassword: process.env.ADMIN_PASSWORD,
     gmailAccount: process.env.GMAIL_ACCOUNT,
-    gmailAppPassword: process.env.GMAIL_APP_PASSWORD
+    gmailAppPassword: process.env.GMAIL_APP_PASSWORD,
+    environment: environment
 };
