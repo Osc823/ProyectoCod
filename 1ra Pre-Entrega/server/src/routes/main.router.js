@@ -9,12 +9,16 @@ import routerUsers from "./users.router.js";
 import routerSession from "./sessions.router.js";
 import githubLoginViewRouter from './github-login.router.js'
 import emailRouter from './email.router.js';
+import { getProductsByFaker } from "../controllers/productFaker.Controller.js";
 
 
 const router = Router();
 
 // Rutas accesibles solo por administradores
 router.use('/api/products', isAdmin, routerProducts);
+
+//Rutas de Mockingproducts con Faker
+router.use('/mockingproducts', getProductsByFaker)
 
 // Rutas accesibles solo por usuarios
 router.use('/api/carts', isUser, routerCarts);

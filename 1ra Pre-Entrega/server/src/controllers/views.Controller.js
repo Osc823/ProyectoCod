@@ -1,4 +1,7 @@
 import { productModel } from "../services/models/product.model.js";
+import CustomError from "../services/errores/CustomError.js";
+import EErrors from "../services/errores/errors-enum.js";
+import { generateUserErrorInfo } from "../services/errores/messages/login-error.message.js";
 
 const login = async (req, res) => {
   res.render("login.hbs");
@@ -41,7 +44,6 @@ const products = async (req, res) => {
       }
     );
     // .sort({ price: 1})
-  
 
     res.render("products", {
       products,
@@ -73,8 +75,14 @@ const logout = async (req, res) => {
 const inicio = async (req, res) => {
   const { username, password } = req.query;
 
-  if (username != "pepe" || password !== "123qwe") {
-    return res.status(401).send("Login failed, check your credentianls");
+  if (!username || !password) {
+    // Creamos un Custom Error
+    CustomError.createError({
+      name: "User Login Error",
+      cause: generateUserErrorInfo({ username, password }),
+      message: "Error tratando de ingresar al usuario",
+      code: EErrors.INVALID_TYPES_ERROR,
+    });
   } else {
     req.session.user = username;
     req.session.admin = false;
@@ -95,5 +103,5 @@ export {
   session,
   logout,
   inicio,
-  rutePrivate
+  rutePrivate,
 };
