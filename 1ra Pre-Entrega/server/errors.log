@@ -2,3 +2,5 @@
 {"level":"error","message":"GET en /mockingproducts - at 20/3/2024 - 12:19:29 p. m."}
 warning: GET en /mockingproducts - at 20/3/2024 - 12:23:21 p. m.
 error: GET en /mockingproducts - at 20/3/2024 - 12:23:21 p. m.
+{"level":"warning","message":"GET en /mockingproducts - at 20/3/2024 - 12:23:50 p. m."}
+{"level":"error","message":"GET en /mockingproducts - at 20/3/2024 - 12:23:50 p. m."}
