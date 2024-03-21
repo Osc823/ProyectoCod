@@ -59,7 +59,7 @@ const postCart = async (req, res) => {
         cart: newCart,
       });
     } catch (error) {
-      console.error("Error al crear un carrito:", error);
+      req.logger.error("Error al crear un carrito:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
 }

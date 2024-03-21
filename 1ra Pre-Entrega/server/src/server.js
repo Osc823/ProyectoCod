@@ -101,6 +101,12 @@ app.use(passport.session());
 //Rutas
 // **Logger
 app.use(addLogger);
+// Manejo de errores
+app.use((err, req, res, next) => {
+  req.logger.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 app.use(router);
 
 

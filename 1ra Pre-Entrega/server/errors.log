@@ -4,3 +4,79 @@ warning: GET en /mockingproducts - at 20/3/2024 - 12:23:21 p. m.
 error: GET en /mockingproducts - at 20/3/2024 - 12:23:21 p. m.
 {"level":"warning","message":"GET en /mockingproducts - at 20/3/2024 - 12:23:50 p. m."}
 {"level":"error","message":"GET en /mockingproducts - at 20/3/2024 - 12:23:50 p. m."}
+{"level":"warning","message":"GET en /mockingproducts - at 20/3/2024 - 2:17:57 p. m."}
+{"level":"http","message":"GET en /mockingproducts - at 20/3/2024 - 2:17:57 p. m."}
+{"level":"warning","message":"GET en /mockingproducts - at 20/3/2024 - 2:18:15 p. m."}
+{"level":"http","message":"GET en /mockingproducts - at 20/3/2024 - 2:18:15 p. m."}
+{"level":"warning","message":"GET en /mockingproducts - at 20/3/2024 - 2:19:29 p. m."}
+{"level":"http","message":"GET en /mockingproducts - at 20/3/2024 - 2:19:29 p. m."}
+warning: GET en /mockingproducts - at 20/3/2024 - 2:37:32 p. m.
+http: GET en /mockingproducts - at 20/3/2024 - 2:37:32 p. m.
+error: GET en /mockingproducts - at 20/3/2024 - 2:37:32 p. m.
+warning: GET en /loggerTest - at 20/3/2024 - 2:38:08 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:38:08 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:38:08 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:38:54 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:38:54 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:38:54 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:39:27 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:39:27 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:39:27 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:41:20 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:41:20 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:41:20 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:42:11 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:42:11 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:42:11 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:42:49 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:42:49 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:42:49 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:45:16 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:45:16 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:45:16 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:47:25 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:47:25 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:47:25 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /loggerTest - at 20/3/2024 - 2:47:56 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:47:56 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:47:56 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+{"level":"warning","message":"GET en /loggerTest - at 20/3/2024 - 2:48:19 p. m."}
+{"level":"http","message":"GET en /loggerTest - at 20/3/2024 - 2:48:19 p. m."}
+{"level":"info","message":"This is an info log."}
+{"level":"warning","message":"This is a warning log."}
+warning: GET en /loggerTest - at 20/3/2024 - 2:49:12 p. m.
+http: GET en /loggerTest - at 20/3/2024 - 2:49:12 p. m.
+error: GET en /loggerTest - at 20/3/2024 - 2:49:12 p. m.
+info: This is an info log.
+warning: This is a warning log.
+error: This is an error log.
+warning: GET en /api/email - at 20/3/2024 - 3:07:32 p. m.
+http: GET en /api/email - at 20/3/2024 - 3:07:32 p. m.
+error: GET en /api/email - at 20/3/2024 - 3:07:32 p. m.

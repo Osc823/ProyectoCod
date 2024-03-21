@@ -8,8 +8,7 @@ export const getProductsByFaker = async(req, res) => {
         }
         res.send({ status: "success", payload: products });
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         res.status(500).send({ error: error, message: "No se pudo obtener los usuarios:" });
     }
-
 }

@@ -4,59 +4,56 @@ import config from "./config.js";
 
 const customLevelsOptions = {
     levels: {
-        fatal: 0,
-        error: 1,
-        warning: 2,
-        http: 3,
-        info: 4,
-        debug: 5
+        debug: 0,
+        http: 1,
+        info: 2,
+        warning: 3,
+        error: 4,
+        fatal: 5
     },
     colors: {
-        fatal: 'red',
-        error: 'orange',
-        warning: 'yellow',
+        debug: 'white',
         http: 'red',
         info: 'blue',
-        debug: 'white'
+        warning: 'yellow',
+        error: 'orange',
+        fatal: 'red'
     }
 };
 
 
-// Logger en env desarrollo
-const prodLogger = winston.createLogger({
-    // Declaramos el trasnport
-    levels: customLevelsOptions.levels,
-    transports: [
-        new winston.transports.Console(
-            {
-                level: "info",
-                format: winston.format.combine(
-                    winston.format.colorize(),
-                    winston.format.simple()
-                )
-            }
-        ),
-        new winston.transports.File(
-            {
-                filename: './errors.log',
-                level: 'warning', //Cambiamos el logger level name.
-                format: winston.format.simple()
-            }
-        )
-    ]
-})
-
-
-// Logger en env prod
+// Logger para desarrollo
 const devLogger = winston.createLogger({
-    // Declaramos el trasnport
     levels: customLevelsOptions.levels,
     transports: [
-        new winston.transports.Console({ level: "http" }),
-        new winston.transports.File({ filename: './errors.log', level: 'warning' })
+        new winston.transports.Console({
+            level: "debug",
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.simple()
+            )
+        }),
+        new winston.transports.File({
+            filename: './errors.log',
+            level: 'error',
+            format: winston.format.simple()
+        })
     ]
-})
+});
 
+// Logger para producción
+const prodLogger = winston.createLogger({
+    levels: customLevelsOptions.levels,
+    transports: [
+        new winston.transports.Console({
+            level: "info"
+        }),
+        new winston.transports.File({
+            filename: './errors.log',
+            level: 'error'
+        })
+    ]
+});
 
 // Declaramos a middleware
 export const addLogger = (req, res, next) => {
