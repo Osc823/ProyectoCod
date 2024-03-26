@@ -1,4 +1,6 @@
 import './App.css'
+import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:3000/'
 import { Route, Routes } from 'react-router-dom'
 import HomeView from './views/HomeView/HomeView'
 import LoginView from './views/LoginView/LoginView'

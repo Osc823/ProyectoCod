@@ -1,37 +1,53 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const RegisterView = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [edad, setEdad] = useState("");
+  const navigate = useNavigate();
+  const [form,setForm] = useState({
+    email:"",
+    password: "",
+    nombre:"",
+    apellido:"",
+    edad:"",
+  });
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    })
+  }
+
+  const enviarCorreo = async (datosUsuario) => {
+    try {
+      const respuestaCorreo = await axios.post("/api/email/", datosUsuario);
+      console.log('Estado de Correo', respuestaCorreo);
+    } catch (error) {
+      console.error('Error al enviar correo:', error);
+    }
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleNombreChange = (e) => {
-    setNombre(e.target.value);
-  };
-
-  const handleApellidoChange = (e) => {
-    setApellido(e.target.value);
-  };
-
-  const handleEdadChange = (e) => {
-    setEdad(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Nombre:", nombre, "Apellido:", apellido, "Email:", email, "Edad:", edad, "Password:", password);
-    // Aquí puedes realizar acciones adicionales, como enviar datos al servidor
+    try {
+      const response = await axios.post("/api/sessions/register", form)
+      console.log("Informacion", response.data);
+      if (response.data.status === "success") {
+        console.log('formulasras',form);
+        enviarCorreo(form)
+        setTimeout(() => {
+          navigate('/')
+        }, 1500)
+        
+      }
+      
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -46,12 +62,13 @@ const RegisterView = () => {
                 Nombre
               </label>
               <input
+                name="nombre"
                 type="text"
                 className="form-control"
                 id="nombre"
                 placeholder="Nombre"
-                value={nombre}
-                onChange={handleNombreChange}
+                value={form.nombre}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -60,12 +77,13 @@ const RegisterView = () => {
                 Apellido
               </label>
               <input
+                name="apellido"
                 type="text"
                 className="form-control"
                 id="apellido"
                 placeholder="Apellido"
-                value={apellido}
-                onChange={handleApellidoChange}
+                value={form.apellido}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -74,12 +92,13 @@ const RegisterView = () => {
                 Edad
               </label>
               <input
+                name="edad"
                 type="number"
                 className="form-control"
                 id="edad"
                 placeholder="Edad"
-                value={edad}
-                onChange={handleEdadChange}
+                value={form.edad}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -88,12 +107,13 @@ const RegisterView = () => {
                 Email
               </label>
               <input
+                name="email"
                 type="email"
                 className="form-control"
                 id="email"
                 placeholder="name@example.com"
-                value={email}
-                onChange={handleEmailChange}
+                value={form.email}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -102,12 +122,13 @@ const RegisterView = () => {
                 Contraseña
               </label>
               <input
+                name="password"
                 type="password"
                 className="form-control"
                 id="password"
                 placeholder="Contraseña"
-                value={password}
-                onChange={handlePasswordChange}
+                value={form.password}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -117,6 +138,7 @@ const RegisterView = () => {
               </button>
             </div>
           </form>
+          {error && <div className="alert alert-danger">{error}</div>}
         </div>
       </div>
     </div>
