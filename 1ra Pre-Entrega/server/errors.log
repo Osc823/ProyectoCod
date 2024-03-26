@@ -257,3 +257,9 @@ error: POST en /api/sessions/register - at 26/3/2024 - 4:26:17 p. m.
 warning: POST en /api/email/ - at 26/3/2024 - 4:26:21 p. m.
 http: POST en /api/email/ - at 26/3/2024 - 4:26:21 p. m.
 error: POST en /api/email/ - at 26/3/2024 - 4:26:21 p. m.
+warning: POST en /api/sessions/register - at 26/3/2024 - 4:28:23 p. m.
+http: POST en /api/sessions/register - at 26/3/2024 - 4:28:23 p. m.
+error: POST en /api/sessions/register - at 26/3/2024 - 4:28:23 p. m.
+warning: POST en /api/email/ - at 26/3/2024 - 4:28:24 p. m.
+http: POST en /api/email/ - at 26/3/2024 - 4:28:24 p. m.
+error: POST en /api/email/ - at 26/3/2024 - 4:28:24 p. m.
