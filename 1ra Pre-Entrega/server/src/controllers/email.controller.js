@@ -12,29 +12,26 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-console.log("Configurac", config);
-
 // Verificamos conexion con gmail
 transporter.verify(function (error, success) {
   if (error) {
-    console.log("Cual es el error?", error);
+    req.logger.error("Cual es el error?", error);
   } else {
-    console.log("Server is ready to take our messages");
+    req.logger.error("Server is ready to take our messages");
   }
 });
 
 export const sendEmail = (req, res) => {
-    const { email, nombre, password } = req.body;
-    console.log('paramas',email);
-  
-    try {
-      // Destructurar las opciones de correo para mayor claridad
-      const mailOptions = {
-        from: "Coder Test - " + config.gmailAccount,
-        to: email,
-        subject: "Bienvenido a THE BEST SHOP",
-        html:
-           `<div>
+  const { email, nombre, password } = req.body;
+  req.logger.info("paramas", email);
+
+  try {
+    // Destructurar las opciones de correo para mayor claridad
+    const mailOptions = {
+      from: "Coder Test - " + config.gmailAccount,
+      to: email,
+      subject: "Bienvenido a THE BEST SHOP",
+      html: `<div>
               <h1>¡Bienvenido a THE BEST SHOP!</h1>
   
               <p>Hola, ${nombre}.</p>
@@ -44,29 +41,27 @@ export const sendEmail = (req, res) => {
               <p>Tu contraseña es: **${password}**</p>
   
           </div>`,
-        attachments: [],
-      };
-  
-      // Enviar correo electrónico usando transporter y manejar la respuesta
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error(error);
-          return res.status(400).send({ message: "Error", payload: error });
-        }
-  
-        console.log("Mensaje enviado:", info.messageId);
-        res.send({ message: "Success", payload: info });
-      });
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .send({
-          error: error,
-          message: "No se pudo enviar el email desde:" + config.gmailAccount,
-        });
-    }
-  };
+      attachments: [],
+    };
+
+    // Enviar correo electrónico usando transporter y manejar la respuesta
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        req.logger.error(error);
+        return res.status(400).send({ message: "Error", payload: error });
+      }
+
+      req.logger.info("Mensaje enviado:", info.messageId);
+      res.send({ message: "Success", payload: info });
+    });
+  } catch (error) {
+    req.logger.error(error);
+    res.status(500).send({
+      error: error,
+      message: "No se pudo enviar el email desde:" + config.gmailAccount,
+    });
+  }
+};
 
 const mailOptionsWithAttachments = {
   from: "Coder Test - " + config.gmailAccount,
@@ -86,28 +81,24 @@ const mailOptionsWithAttachments = {
   ],
 };
 
-
-
 export const sendEmailWithAttachments = (req, res) => {
   try {
     let result = transporter.sendMail(
       mailOptionsWithAttachments,
       (error, info) => {
         if (error) {
-          console.log(error);
+          req.logger.error(error);
           res.status(400).send({ message: "Error", payload: error });
         }
-        console.log("Message sent: %s", info.messageId);
+        req.logger.info("Message sent: %s", info.messageId);
         res.send({ message: "Success", payload: info });
       }
     );
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .send({
-        error: error,
-        message: "No se pudo enviar el email desde:" + config.gmailAccount,
-      });
+    req.logger.error(error);
+    res.status(500).send({
+      error: error,
+      message: "No se pudo enviar el email desde:" + config.gmailAccount,
+    });
   }
 };

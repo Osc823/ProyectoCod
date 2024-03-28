@@ -30,7 +30,7 @@ class CartManager {
       );
       return true;
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return false;
     }
   }
@@ -47,7 +47,7 @@ class CartManager {
     this.carts.push(newCart);
     await this.saveFile();
     return newCart.id;
-    console.log(`Nuevo carrito con id ${newCart.id} creado con éxito.`);
+    req.logger.info(`Nuevo carrito con id ${newCart.id} creado con éxito.`);
   }
 
   async getCartById(id) {
@@ -62,7 +62,7 @@ class CartManager {
   
 
     if (!cart) {
-      console.log("Error: Carrito no encontrado.");
+      req.logger.error("Error: Carrito no encontrado.");
       return;
     }
     //Si esta creado buscamos el producto en el carro
@@ -81,7 +81,7 @@ class CartManager {
     }
 
     await this.saveFile();
-    console.log(`Producto ${productId} agregado al carrito "${cart.id}".`);
+    req.logger.info(`Producto ${productId} agregado al carrito "${cart.id}".`);
   }
 }
 

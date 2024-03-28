@@ -24,11 +24,11 @@ class ProductManager {
 
   async saveFile(productsData) {
     if (!productsData) {
-      return console.log('No hay productos aun');
+      return req.logger.info('No hay productos aun');
     }
     const existProducts = this.products.find((p) => p.id === productsData.id)  
     if (existProducts) {
-      console.log("El post ya existe");
+      req.logger.info("El post ya existe");
       throw Error(`Post with id ${productsData.id} already exists`);
     }
     const lastProduct = this.products[this.products.length-1]
@@ -42,7 +42,7 @@ class ProductManager {
       );
       return true;
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
       return false;
     }
   }
@@ -53,7 +53,7 @@ class ProductManager {
 
     // Validar que el code sea pasado por el usuario
     if (!product.code) {
-      console.log("Error: El código del producto es obligatorio.");
+      req.logger.error("Error: El código del producto es obligatorio.");
       return;
     }
 
@@ -65,12 +65,12 @@ class ProductManager {
       const respuesta = await this.saveFile();
 
       if (respuesta) {
-        console.log("Producto agregado");
+        req.logger.info("Producto agregado");
       } else {
-        console.log("Hubo un error al agregar el producto");
+        req.logger.info("Hubo un error al agregar el producto");
       }
     } else {
-      console.log("Error: El código del producto ya existe.");
+      req.logger.info("Error: El código del producto ya existe.");
     }
   }
 
@@ -85,12 +85,12 @@ class ProductManager {
       this.products.splice(index, 1);
       try {
         await this.saveFile();
-        console.log("Producto eliminado");
+        req.logger.info("Producto eliminado");
       } catch (error) {
-        console.log("Hubo un error al eliminar el producto");
+        req.logger.info("Hubo un error al eliminar el producto");
       }
     } else {
-      console.log("Producto no encontrado");
+      req.logger.info("Producto no encontrado");
     }
   }
 
@@ -100,12 +100,12 @@ class ProductManager {
       this.products[index] = { ...this.products[index], ...updateProduct, id };
       try {
         await this.saveFile();
-        console.log("Producto actualizado");
+        req.logger.info("Producto actualizado");
       } catch (error) {
-        console.log("Hubo un error al actualizar el producto");
+        req.logger.info("Hubo un error al actualizar el producto");
       }
     } else {
-      console.log("Producto no encontrado");
+      req.logger.info("Producto no encontrado");
     }
   }
 

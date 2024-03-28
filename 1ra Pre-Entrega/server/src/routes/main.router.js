@@ -20,7 +20,7 @@ router.use("/api/products", isAdmin, routerProducts);
 router.use("/mockingproducts", getProductsByFaker);
 
 // Rutas accesibles solo por usuarios
-router.use("/api/carts", isUser, routerCarts);
+router.use("/api/carts", routerCarts);
 router.use("/api/messages", isUser, routerMessages);
 router.use("/users", routerUsers);
 

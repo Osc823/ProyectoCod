@@ -113,7 +113,7 @@ app.use(router);
 const productsSer = new productDao();
 //Socket communication
 io.on("connection", async (socket) => {
-  console.log("Nuevo cliente conectado");
+  req.logger.info("Nuevo cliente conectado");
 
   // Emitir todos los mensajes y productos al cliente que se acaba de conectar
   const allMessages = await messageDao.getMessages();
@@ -130,7 +130,7 @@ io.on("connection", async (socket) => {
       // Emitir la lista actualizada a todos los clientes
       io.emit("products", updatedProducts);
     } catch (error) {
-      console.log(error);
+      req.logger.error(error);
     }
   });
 
@@ -140,7 +140,7 @@ io.on("connection", async (socket) => {
       // Emitir el nuevo mensaje a todos los clientes, incluido el remitente
       io.emit("message", newMessage);
     } catch (error) {
-      console.error("Error al guardar el mensaje en la base de datos:", error);
+      req.logger.error("Error al guardar el mensaje en la base de datos:", error);
     }
   });
 

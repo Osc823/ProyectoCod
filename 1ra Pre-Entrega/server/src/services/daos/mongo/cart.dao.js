@@ -4,7 +4,7 @@ class CartDao {
   // Obtener todos los carritos
 
   constructor() {
-    console.log("Working students with Database persistence in mongodb");
+    req.logger.info("Working students with Database persistence in mongodb");
 }
 
   async getCarts() {
@@ -38,7 +38,7 @@ class CartDao {
       const cart = await cartModel.findById(cartId);
 
       if (!cart) {
-        console.error(`Error: Carrito con ID ${cartId} no encontrado.`);
+        req.logger.error(`Error: Carrito con ID ${cartId} no encontrado.`);
         return;
       }
 
@@ -59,9 +59,9 @@ class CartDao {
       // Guardar los cambios en la base de datos
       await cart.save();
 
-      console.log(`Producto ${productId} agregado al carrito con ID ${cart.id}.`);
+      req.logger.info(`Producto ${productId} agregado al carrito con ID ${cart.id}.`);
     } catch (error) {
-      console.error("Error al agregar producto al carrito:", error.message);
+      req.logger.error("Error al agregar producto al carrito:", error.message);
     }
   }
 }

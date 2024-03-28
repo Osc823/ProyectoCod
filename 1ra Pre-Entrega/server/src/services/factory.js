@@ -5,7 +5,7 @@ let cartsService;
 let productsService;  
 
 async function initializeMongoService() {
-    console.log("Iniciando Servicio para Mongo!!");
+    req.logger.info("Iniciando Servicio para Mongo!!");
     try {
         await MongoSingleton.getInstance();
     } catch (error) {
@@ -19,30 +19,30 @@ switch (config.persistence) {
         initializeMongoService();
         const { default: CartServiceMongo } = await import('./daos/mongo/cart.dao.js')
         cartsService = new CartServiceMongo
-        console.log("Servicio de carrito cargado:");
-        console.log(cartsService);
+        req.logger.info("Servicio de carrito cargado:");
+        req.logger.info(cartsService);
 
         const { default: ProductsServiceMongo } = await import('./daos/mongo/product.dao.js')
         productsService = new ProductsServiceMongo
-        console.log("Servicio de productos cargado:");
-        console.log(productsService);
+        req.logger.info("Servicio de productos cargado:");
+        req.logger.info(productsService);
         break;
 
     case 'file':
         // IMPORTARME le DAO
         const { CartManager } = await import('./daos/filesystem/Cart.js')
         cartsService = new CartManager("./carrito.json")
-        console.log("Servicio de carrito cargado:");
-        console.log(cartsService);
+        req.logger.info("Servicio de carrito cargado:");
+        req.logger.info(cartsService);
 
         const { ProductManager } = await import('./daos/filesystem/ProductManager.js')
         productsService = new ProductManager("./products.json")
-        console.log("Servicio de productos cargado:");
-        console.log(productsService);
+        req.logger.info("Servicio de productos cargado:");
+        req.logger.info(productsService);
         break;
 
     default:
-        console.error("Persistencia no válida en la configuración:", config.persistence);
+        req.logger.error("Persistencia no válida en la configuración:", config.persistence);
         process.exit(1); // Salir con código de error
         break;
 }

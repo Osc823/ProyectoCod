@@ -6,7 +6,7 @@ class MessageDao {
     try {
       return await messageModel.find();
     } catch (error) {
-      console.error("Error al obtener mensajes:", error.message);
+      req.logger.error("Error al obtener mensajes:", error.message);
       throw error;
     }
   }
@@ -16,7 +16,7 @@ class MessageDao {
     try {
       return await messageModel.findById(id);
     } catch (error) {
-      console.error(`Error al obtener el mensaje con ID ${id}:`, error.message);
+      req.logger.error(`Error al obtener el mensaje con ID ${id}:`, error.message);
       throw error;
     }
   }
@@ -26,7 +26,7 @@ class MessageDao {
     try {
       return await messageModel.create({ username: user, messages: message });
     } catch (error) {
-      console.error("Error al crear mensaje:", error.message);
+      req.logger.error("Error al crear mensaje:", error.message);
       throw error;
     }
   }
@@ -36,7 +36,7 @@ class MessageDao {
     try {
       return await messageModel.findByIdAndUpdate(id, { messages: newMessage });
     } catch (error) {
-      console.error(`Error al actualizar el mensaje con ID ${id}:`, error.message);
+      req.logger.error(`Error al actualizar el mensaje con ID ${id}:`, error.message);
       throw error;
     }
   }
@@ -46,7 +46,7 @@ class MessageDao {
     try {
       return await messageModel.findByIdAndDelete(id);
     } catch (error) {
-      console.error(`Error al eliminar el mensaje con ID ${id}:`, error.message);
+      req.logger.error(`Error al eliminar el mensaje con ID ${id}:`, error.message);
       throw error;
     }
   }

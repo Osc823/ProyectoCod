@@ -76,7 +76,7 @@ const cartById =  async (req, res) => {
         res.status(400).json({ error: "Falta el ID del carrito" });
       }
     } catch (error) {
-      console.error(`Error al obtener el carrito con ID ${cid}:`, error);
+      req.logger.error(`Error al obtener el carrito con ID ${cid}:`, error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
@@ -90,7 +90,7 @@ const addProductCart = async (req, res) => {
         res.status(400).json({ error: "Falta el ID del carrito o del producto" });
       }
     } catch (error) {
-      console.error(`Error al agregar producto al carrito ${cid}:`, error);
+      req.logger.error(`Error al agregar producto al carrito ${cid}:`, error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }

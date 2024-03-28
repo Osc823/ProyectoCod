@@ -1,13 +1,12 @@
 const registerPassportLocal =  async (req, res) => {
-    console.log("Registrando usuario:");
+    req.logger.info("Registrando usuario:");
     res.status(201).send({ status: "success", message: "Usuario creado con extito." });
 }
 
 const loginPassportLocal = async (req, res) => {
-    console.log("User found to login:");
+    req.logger.info("User found to login:");
 
     const user = req.user;
-
 
     req.session.user = {
         name: `${user.first_name} ${user.last_name}`,
