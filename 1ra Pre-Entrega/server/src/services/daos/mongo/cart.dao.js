@@ -4,7 +4,7 @@ class CartDao {
   // Obtener todos los carritos
 
   constructor() {
-    req.logger.info("Working students with Database persistence in mongodb");
+   console.log("Working students with Database persistence in mongodb");
 }
 
   async getCarts() {

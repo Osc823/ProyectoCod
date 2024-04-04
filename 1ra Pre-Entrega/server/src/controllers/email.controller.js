@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import __dirname from "../dirname.js";
+import { addLogger } from "../config/logger_CUSTOM.js"; // Importa el middleware addLogger
 
 // configuracion de transport
 const transporter = nodemailer.createTransport({
@@ -15,9 +16,9 @@ const transporter = nodemailer.createTransport({
 // Verificamos conexion con gmail
 transporter.verify(function (error, success) {
   if (error) {
-    req.logger.error("Cual es el error?", error);
+    console.error("Cual es el error?", error); // Cambiado de req.logger.error a console.error
   } else {
-    req.logger.error("Server is ready to take our messages");
+    console.error("Server is ready to take our messages"); // Cambiado de req.logger.error a console.error
   }
 });
 
