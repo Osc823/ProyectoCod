@@ -2,45 +2,37 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import style from "./cart.module.css";
 
-const CartView = () => {
-  const [products, setProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
+// eslint-disable-next-line react/prop-types
+const CartView = ({ listCartProducts }) => {
   const [lisCart, setLisCart] = useState([]);
-  console.log('Holaaa', lisCart);
 
-
-  const miCarrito = async()=> {
-    const response = await axios.get(`/api/products/`);
-    setAllProducts(response.data);
-  }
-
-  const listCart = async()=> {
-    const cartProductIds = products.map(product => product.product);
-    const filteredProducts = allProducts.filter(product => cartProductIds.includes(product._id));
-  
-    // Actualiza cada producto con la cantidad del carrito
-    const productsWithQuantity = filteredProducts.map(product => {
-      const cartProduct = products.find(item => item.product === product._id);
-      if (cartProduct) {
+  const miCarrito = async () => {
+    try {
+      const response = await axios.get(`/api/products/`);
+      const allProducts = response.data;
+      const cartProductIds = listCartProducts.map((product) => product.product);
+      const filteredProducts = allProducts.filter((product) =>
+        cartProductIds.includes(product._id)
+      );
+      const productsWithQuantity = filteredProducts.map((product) => {
+        const cartProduct = listCartProducts.find((item) => item.product === product._id);
         return {
           ...product,
           quantity: cartProduct.quantity
         };
-      } else {
-        return product;
-      }
-    });
-  
-    setLisCart(productsWithQuantity);
+      });
+      setLisCart(productsWithQuantity);
+    } catch (error) {
+      console.error('Error al obtener productos:', error);
+    }
   };
-  
+
   const removeProduct = (id) => {
-    setProducts(products.filter((product) => product._id !== id));
+    setLisCart(lisCart.filter((product) => product._id !== id));
   };
 
   const increaseQuantity = (id) => {
-
-    const updatedProducts = lisCart.map(product => {
+    const updatedProducts = lisCart.map((product) => {
       if (product._id === id) {
         return { ...product, quantity: product.quantity + 1 };
       }
@@ -50,7 +42,7 @@ const CartView = () => {
   };
 
   const decreaseQuantity = (id) => {
-    const updatedProducts = lisCart.map(product => {
+    const updatedProducts = lisCart.map((product) => {
       if (product._id === id && product.quantity > 1) {
         return { ...product, quantity: product.quantity - 1 };
       }
@@ -60,28 +52,15 @@ const CartView = () => {
   };
 
   const totalPrice = () => {
-    return lisCart?.reduce((total, product) => total + (product.price * product.quantity), 0);
+    return lisCart?.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    );
   };
 
   useEffect(() => {
-    miCarrito();
-    listCart();
-    
-    const fetchCart = async () => {
-      try {
-        const userIdFromLocalStorage = localStorage.getItem("userId");
-        if (userIdFromLocalStorage) {
-          const response = await axios.get(`/api/carts/user/${userIdFromLocalStorage}`);
-          setProducts(response.data.products); 
-          
-        }
-      } catch (error) {
-        console.error('Error fetching user cart:', error);
-      }
-    };
-   
-    fetchCart();
-  }, []);
+    miCarrito(); // Obtener todos los productos y actualizar el carrito
+  }, [listCartProducts]); // Escucha cambios en listCartProducts para volver a obtener productos si cambian
 
   return (
     <div>
@@ -101,13 +80,17 @@ const CartView = () => {
         <tbody>
           {lisCart.map((ele, index) => (
             <tr key={ele.id}>
-              <td className={style.tdStyle}>{index+1}</td>
+              <td className={style.tdStyle}>{index + 1}</td>
               <td className={style.tdStyle}>
-                <img src={ele.image} style={{ width: "285px", height: "177px" }} alt="Producto" />
+                <img
+                  src={ele.image}
+                  style={{ width: "285px", height: "177px" }}
+                  alt="Producto"
+                />
                 <p>{ele.title}</p>
               </td>
               <td className={style.tdStyle}>{ele.description}</td>
-              <td  className={style.tdStyle}>
+              <td className={style.tdStyle}>
                 {/* Botón para disminuir cantidad */}
                 <button onClick={() => decreaseQuantity(ele._id)}>-</button>
                 <span>{ele.quantity}</span>
@@ -115,9 +98,15 @@ const CartView = () => {
                 <button onClick={() => increaseQuantity(ele._id)}>+</button>
               </td>
               <td className={style.tdStyle}>${ele.price}</td>
-              <td className={style.tdStyle}>${ele.price * ele.quantity}</td> {/* Precio Total */}
               <td className={style.tdStyle}>
-                <button onClick={() => removeProduct(ele._id)} className={style.btnDelete}>
+                ${ele.price * ele.quantity}
+              </td>{" "}
+              {/* Precio Total */}
+              <td className={style.tdStyle}>
+                <button
+                  onClick={() => removeProduct(ele._id)}
+                  className={style.btnDelete}
+                >
                   Eliminar
                 </button>
               </td>
@@ -126,7 +115,7 @@ const CartView = () => {
         </tbody>
       </table>
       <div className={style.total}>
-        <h2 style={{marginBottom:"2rem"}}>Total: ${totalPrice()}</h2>
+        <h2 style={{ marginBottom: "2rem" }}>Total: ${totalPrice()}</h2>
       </div>
     </div>
   );
