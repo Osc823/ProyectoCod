@@ -14,7 +14,7 @@ import { getProductsByFaker } from "../controllers/productFaker.Controller.js";
 const router = Router();
 
 // Rutas accesibles solo por administradores
-router.use("/api/products", isAdmin, routerProducts);
+router.use("/api/products", routerProducts);
 
 //Rutas de Mockingproducts con Faker
 router.use("/mockingproducts", getProductsByFaker);

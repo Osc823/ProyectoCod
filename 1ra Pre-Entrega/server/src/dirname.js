@@ -12,7 +12,7 @@ export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSy
 
 // Validamos el hash
 export const isValidPassword = (user, password) => {
-  req.logger.info(`Datos a validar: user-password: ${user.password}, password: ${password}`);
+  console.log(`Datos a validar: user-password: ${user.password}, password: ${password}`);
     // console.log('Bycrtpera', bcrypt.compareSync(password, user.password));
     return bcrypt.compareSync(password, user.password);
 }

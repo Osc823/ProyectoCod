@@ -4,6 +4,7 @@ import axios from "axios";
 
 const LoginView = () => {
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -13,7 +14,6 @@ const LoginView = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     setForm({
       ...form,
@@ -26,11 +26,13 @@ const LoginView = () => {
 
     try {
       const response = await axios.post("/api/sessions/login", form);
+      console.log("Aquí está la respuesta:", response);
 
       if (response.data.status === "success") {
+        localStorage.setItem("userId", response.data.payload.id); // Actualiza infoUser con los datos del usuario
         setTimeout(() => {
-          navigate('/')
-        }, 1500)
+          navigate("/home");
+        }, 1500);
       }
     } catch (error) {
       setError(error.message);
@@ -39,9 +41,6 @@ const LoginView = () => {
 
   return (
     <div style={{ backgroundColor: "#f4f4f4", height: "100vh" }}>
-      <Link to="/" style={{ textDecorationLine: "none" }}>
-        ⬅️ HOME
-      </Link>
       <div className="container d-flex align-items-center justify-content-center">
         <div
           className="col-md-4"

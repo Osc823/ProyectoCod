@@ -81,10 +81,12 @@ const cartById =  async (req, res) => {
     }
   }
 const addProductCart = async (req, res) => {
-    const { cid, pid } = req.params;
+    const { cid, pid, uid } = req.params;
+
+    console.log('Raro esto eh',cid,'producto', pid, 'user', uid);
     try {
       if (cid && pid) {
-        const response = await cartsService.addToCart(cid, pid);
+        const response = await cartsService.addToCart(cid, pid, uid);
         res.json(response);
       } else {
         res.status(400).json({ error: "Falta el ID del carrito o del producto" });

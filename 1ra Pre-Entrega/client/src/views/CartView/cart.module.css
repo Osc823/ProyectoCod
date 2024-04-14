@@ -1,0 +1,45 @@
+.content {
+    display: flex;
+    flex-direction: column; /* Cambiado a column */
+    align-items: center; /* Para centrar verticalmente */
+    margin-bottom: 3rem;
+  }
+  .textTitle {
+    margin-top: 2rem;
+    text-align: center;
+    font-weight: 900;
+    font-size: 3.3em;
+    line-height: 1.5;
+  }
+  
+.tableStyle {
+  width: 80%;
+  margin: 10px;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.thStyle {
+  background-color: #f2f2f2;
+  padding: 8px;
+}
+
+.tdStyle {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+.btnDelete{
+    background-color: #721919; /* Color rojo */
+    border: 3px solid white;
+    color: white;
+    padding: 7px;
+    border-radius: 15px;
+}
+.btnPago{
+    background-color: #1f1972; /* Color rojo */
+    border: 3px solid white;
+    color: white;
+    padding: 7px;
+    border-radius: 15px;
+}

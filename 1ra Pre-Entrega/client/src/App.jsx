@@ -10,15 +10,17 @@ import Footer from './components/Footer/Footer'
 import AdminDashboard from './views/AdminDashboard/AdminDashboard'
 import UserDashboard from './views/UserDashboard/UserDashnoard'
 import CategoriaView from './views/CategoriaView/CategoriaView'
+import CartView from './views/CartView/CartView'
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<><Navbar/><HomeView /><Footer/></>}/>
-        <Route path="/login" element={<LoginView />}/>
+        <Route path="/home" element={<><Navbar/><HomeView /><Footer/></>}/>
+        <Route path="/" element={<LoginView />}/>
         <Route path="/register" element={<RegisterView />}/>
         <Route path='/adminDashboard' element={<AdminDashboard/>}/>
+        <Route path='/cart' element={<><Navbar/><CartView/> <Footer/></>}/>
         <Route path='/userDashboard' element={<UserDashboard/>}/>
         <Route path='/categoria' element={<><Navbar/><CategoriaView/><Footer/></>}/>
       </Routes>

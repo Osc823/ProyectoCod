@@ -32,36 +32,42 @@ class CartDao {
   }
 
   // Agregar un producto al carrito por su ID
-  async addToCart(cartId, productId) {
+  async addToCart(cartId, productId, userId) {
     try {
-      // Buscar el carrito por su ID
-      const cart = await cartModel.findById(cartId);
-
+      console.log('Qie estas', cartId, productId, userId);
+      // Buscar el carrito por su ID y el ID del usuario
+      const cart = await cartModel.findOne({ _id: cartId, userId: userId });
+      console.log('Micarrito', cart);
       if (!cart) {
-        req.logger.error(`Error: Carrito con ID ${cartId} no encontrado.`);
-        return;
+        console.error(`Error: Carrito con ID ${cartId} no encontrado para el usuario ${userId}.`);
+        return null; // Retornar null si el carrito no se encuentra
       }
-
+  
       // Buscar el producto en el carrito
       const productIndex = cart.products.findIndex(
-        (p) => p.idProduct === productId
+        (p) => p.product == productId
       );
 
+      console.log('Que responde', productIndex);
+  
       // Si el producto no está, agregarlo; si está, incrementar la cantidad
       if (productIndex !== -1) {
         // Producto ya existe en el carrito, incrementar cantidad
         cart.products[productIndex].quantity++;
       } else {
         // Agregar nuevo producto al carrito
-        cart.products.push({ idProduct: productId, quantity: 1 });
+        cart.products.push({idProduct:productId, quantity: 1, product: productId });
+        console.log('Aqui esta el problema', cart.products);
+        console.log('Ids  produscts',productId);
       }
-
+  
       // Guardar los cambios en la base de datos
-      await cart.save();
-
-      req.logger.info(`Producto ${productId} agregado al carrito con ID ${cart.id}.`);
+      console.log(`Producto ${productId} agregado al carrito con ID ${cartId}.`);
+      return await cart.save();
+  
     } catch (error) {
-      req.logger.error("Error al agregar producto al carrito:", error.message);
+      console.error("Error al agregar producto al carrito:", error.message);
+      throw error; // Propagar el error para que se maneje en el controlador
     }
   }
 }

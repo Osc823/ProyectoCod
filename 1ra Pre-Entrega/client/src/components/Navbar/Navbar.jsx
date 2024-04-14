@@ -1,10 +1,32 @@
 // import logo from './tu-logo.png'; // Importa la ruta de tu logo
+import { useEffect, useState } from "react";
 import logo from "../../assets/logo2.png";
 import inicio from "../../assets/usuario.png";
 import style from "./navbar.module.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 
 const Navbar = () => {
+  const [cartId, setCartId] = useState(null);
+  console.log('Mi carrito', cartId);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const userIdFromLocalStorage = localStorage.getItem("userId");
+        if (userIdFromLocalStorage) {
+          const response = await axios.get(`/api/carts/user/${userIdFromLocalStorage}`);
+          setCartId(response.data.products); // Ajusta según la propiedad correcta de la respuesta
+        }
+      } catch (error) {
+        console.error('Error fetching user cart:', error);
+        throw error; // Reenvía el error para manejarlo en el contexto donde se llame a la función
+      }
+    };
+    fetchCart();
+  }, []);
+ 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -14,7 +36,7 @@ const Navbar = () => {
           alt="Logo"
         />
         <div className={style.navbar}>
-          <a className="nav-link active" aria-current="page" href="/">
+          <a className="nav-link active" aria-current="page" href="/home">
             Inicio
           </a>
           <a className="nav-link active" aria-current="page" href="/categoria">
@@ -48,13 +70,13 @@ const Navbar = () => {
                     color: "white",
                   }}
                 >
-                  0
+                {cartId?.length}
                 </div>
               </div>
             </Link>
           </div>
           <div style={{ marginLeft: "10px" }}> {/* Separación del Login */}
-            <Link to={"/login"}>
+            <Link to={"/"}>
               <img
                 src={inicio}
                 style={{ width: "30px", height: "30px", borderRadius: "100%" }}

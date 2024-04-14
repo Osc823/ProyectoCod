@@ -112,43 +112,43 @@ app.use(router);
 
 const productsSer = new productDao();
 //Socket communication
-io.on("connection", async (socket) => {
-  req.logger.info("Nuevo cliente conectado");
+// io.on("connection", async (socket) => {
+//   req.logger.info("Nuevo cliente conectado");
 
-  // Emitir todos los mensajes y productos al cliente que se acaba de conectar
-  const allMessages = await messageDao.getMessages();
-  const allProducts = await productsSer.getAllProducts();
+//   // Emitir todos los mensajes y productos al cliente que se acaba de conectar
+//   const allMessages = await messageDao.getMessages();
+//   const allProducts = await productsSer.getAllProducts();
 
-  socket.emit("products", allProducts);
-  socket.emit("messages", allMessages);
+//   socket.emit("products", allProducts);
+//   socket.emit("messages", allMessages);
 
-  socket.on("product_send", async (data) => {
-    try {
-      await productsSer.createProduct(data);
-      // Obtener la lista actualizada de productos después de la creación
-      const updatedProducts = await productsSer.getAllProducts();
-      // Emitir la lista actualizada a todos los clientes
-      io.emit("products", updatedProducts);
-    } catch (error) {
-      req.logger.error(error);
-    }
-  });
+//   socket.on("product_send", async (data) => {
+//     try {
+//       await productsSer.createProduct(data);
+//       // Obtener la lista actualizada de productos después de la creación
+//       const updatedProducts = await productsSer.getAllProducts();
+//       // Emitir la lista actualizada a todos los clientes
+//       io.emit("products", updatedProducts);
+//     } catch (error) {
+//       req.logger.error(error);
+//     }
+//   });
 
-  socket.on("message", async (data) => {
-    try {
-      const newMessage = await messageDao.createMessage(data);
-      // Emitir el nuevo mensaje a todos los clientes, incluido el remitente
-      io.emit("message", newMessage);
-    } catch (error) {
-      req.logger.error("Error al guardar el mensaje en la base de datos:", error);
-    }
-  });
+//   socket.on("message", async (data) => {
+//     try {
+//       const newMessage = await messageDao.createMessage(data);
+//       // Emitir el nuevo mensaje a todos los clientes, incluido el remitente
+//       io.emit("message", newMessage);
+//     } catch (error) {
+//       req.logger.error("Error al guardar el mensaje en la base de datos:", error);
+//     }
+//   });
 
-  socket.on("inicio", async (data) => {
-    // Emitir evento "connected" a todos los clientes excepto al remitente
-    socket.broadcast.emit("connected", data);
-  });
+//   socket.on("inicio", async (data) => {
+//     // Emitir evento "connected" a todos los clientes excepto al remitente
+//     socket.broadcast.emit("connected", data);
+//   });
 
-  // Emitir todos los mensajes al cliente recién conectado
-  socket.emit("messages", allMessages);
-});
+//   // Emitir todos los mensajes al cliente recién conectado
+//   socket.emit("messages", allMessages);
+// });

@@ -1,60 +1,74 @@
-import { useState } from "react";
+import {useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const RegisterView = () => {
   const navigate = useNavigate();
-  const [form,setForm] = useState({
-    email:"",
-    password: "",
-    nombre:"",
-    apellido:"",
-    edad:"",
-  });
-
   const [error, setError] = useState(null);
 
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+    age: "",
+  });
+
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setForm({
       ...form,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const enviarCorreo = async (datosUsuario) => {
     try {
       const respuestaCorreo = await axios.post("/api/email/", datosUsuario);
-      console.log('Estado de Correo', respuestaCorreo);
+      console.log("Estado de Correo", respuestaCorreo);
     } catch (error) {
-      console.error('Error al enviar correo:', error);
+      console.error("Error al enviar correo:", error);
+      setError("Error al enviar correo");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/sessions/register", form)
-      console.log("Informacion", response.data);
-      if (response.data.status === "success") {
-        console.log('formulasras',form);
-        enviarCorreo(form)
+      const registerResponse = await axios.post("/api/sessions/register", {
+        ...form
+      });
+      if (registerResponse.data.status === "success") {
+        enviarCorreo(form);
         setTimeout(() => {
-          navigate('/')
-        }, 1500)
-        
+          navigate("/");
+        }, 1500);
+      } else {
+        setError("Error al registrar usuario");
       }
-      
     } catch (error) {
-      setError(error.message);
+      console.error("Error al registrar usuario:", error);
+      setError("Error al registrar usuario");
     }
   };
 
   return (
     <div style={{ backgroundColor: "#f4f4f4", height: "100%" }}>
-      <Link to="/login" style={{ textDecorationLine: "none" }}>⬅️ VOLVER</Link>
+      <Link to="/" style={{ textDecorationLine: "none" }}>
+        ⬅️ VOLVER
+      </Link>
       <div className="container d-flex align-items-center justify-content-center">
-        <div className="col-md-4" style={{ borderRadius: "15px", padding: "20px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",margin:"25px" , backgroundColor: "white" }}>
+        <div
+          className="col-md-4"
+          style={{
+            borderRadius: "15px",
+            padding: "20px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+            margin: "25px",
+            backgroundColor: "white",
+          }}
+        >
           <h2 className="mb-4">Registrarse</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -62,12 +76,12 @@ const RegisterView = () => {
                 Nombre
               </label>
               <input
-                name="nombre"
+                name="first_name"
                 type="text"
                 className="form-control"
-                id="nombre"
+                id="first_name"
                 placeholder="Nombre"
-                value={form.nombre}
+                value={form.first_name}
                 onChange={handleChange}
                 required
               />
@@ -77,12 +91,12 @@ const RegisterView = () => {
                 Apellido
               </label>
               <input
-                name="apellido"
+                name="last_name"
                 type="text"
                 className="form-control"
-                id="apellido"
+                id="last_name"
                 placeholder="Apellido"
-                value={form.apellido}
+                value={form.last_name}
                 onChange={handleChange}
                 required
               />
@@ -92,12 +106,12 @@ const RegisterView = () => {
                 Edad
               </label>
               <input
-                name="edad"
+                name="age"
                 type="number"
                 className="form-control"
-                id="edad"
+                id="age"
                 placeholder="Edad"
-                value={form.edad}
+                value={form.age}
                 onChange={handleChange}
                 required
               />
