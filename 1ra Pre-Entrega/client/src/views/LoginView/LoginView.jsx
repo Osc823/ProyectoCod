@@ -30,6 +30,7 @@ const LoginView = () => {
 
       if (response.data.status === "success") {
         localStorage.setItem("userId", response.data.payload.id); // Actualiza infoUser con los datos del usuario
+        localStorage.setItem("userEmail", response.data.payload.email)
         setTimeout(() => {
           navigate("/home");
         }, 1500);

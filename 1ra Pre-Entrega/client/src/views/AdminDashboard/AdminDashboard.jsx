@@ -3,6 +3,7 @@ import style from "./admindashboard.module.css";
 // import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import perfil from "../../assets/usuario.png"
 import Estadisticas from "./EstadisticasView/Estadisticas";
 import UsuariosList from "./UsuariosView/UsuariosList";
 
@@ -31,7 +32,7 @@ const AdminDashboard = () => {
             <div className={`${style.menu}`}>
               <div>
                 <div className={style.profile}>
-                  <img src="" alt="Foto de perfil" />
+                  <img src={perfil} alt="Foto de perfil" />
                 </div>
                 <div>
                   <h4>Nombre</h4>
@@ -166,6 +167,43 @@ const AdminDashboard = () => {
                     &nbsp; Agregar Producto
                   </Link>
                 </li>
+                <li>
+                <a
+                  onClick={() => {
+                    handleSelect('F')
+                    // setShowModal(true)
+                  }}
+                  href="/"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '70px',
+                    width: '100%',
+                    paddingInline: '5px',
+                    backgroundColor: selectedLink === 'F' ? color : 'white',
+                    color: selectedLink === 'F' ? 'white' : 'black',
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="35"
+                    height="35"
+                    fill={selectedLink === 'F' ? 'white' : 'black'}
+                    className="bi bi-box-arrow-right"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                    />
+                  </svg>{' '}
+                  &nbsp; Salir
+                </a>
+              </li>
   
               </ul>
             </div>
@@ -177,21 +215,11 @@ const AdminDashboard = () => {
                   <ul className="navbar-nav ms-auto">
                     <li className="nav-item">
                       <Link
-                        to="/"
+                        to="/home"
                         className="nav-link active"
                         aria-current="page"
                       >
                         Inicio
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/productos" className="nav-link">
-                        Productos
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/contacto" className="nav-link">
-                        Contacto
                       </Link>
                     </li>
                   </ul>

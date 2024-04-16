@@ -1,31 +1,60 @@
 // import logo from './tu-logo.png'; // Importa la ruta de tu logo
 import { useEffect, useState } from "react";
 import logo from "../../assets/logo2.png";
-import inicio from "../../assets/usuario.png";
+import Dropdown from "react-bootstrap/Dropdown";
 import style from "./navbar.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 
 const Navbar = () => {
   const [cartId, setCartId] = useState(null);
+  console.log('Xaaa', cartId);
+  const [infoUser, setInfoUser] = useState();
+  const userInfoFromLocalStorage = localStorage.getItem("userEmail");
+  console.log('Si lo trae',infoUser );
+  const navigate = useNavigate()
+
+  
+  
+  const fetchUser = async () => {
+    console.log('Que llea', userInfoFromLocalStorage);
+    const response = await axios.get(
+      `/users/byEmail/${userInfoFromLocalStorage}`
+    );
+    setInfoUser(response.data.data.isAdmin);
+    console.log('Correo', response);
+  };
+
+  // Función para limpiar el localStorage y redirigir a la página de inicio
+  const handleLogout = () => {
+    localStorage.removeItem('userEmail'); // Elimina el elemento del localStorage
+    localStorage.removeItem('userId')
+      navigate('/')
+  
+  };
 
   useEffect(() => {
+    fetchUser();
+    
     const fetchCart = async () => {
       try {
         const userIdFromLocalStorage = localStorage.getItem("userId");
+        
         if (userIdFromLocalStorage) {
-          const response = await axios.get(`/api/carts/user/${userIdFromLocalStorage}`);
+          const response = await axios.get(
+            `/api/carts/user/${userIdFromLocalStorage}`
+          );
+          console.log('Aqui esta!!!', response);
           setCartId(response.data.products); // Ajusta según la propiedad correcta de la respuesta
         }
       } catch (error) {
-        console.error('Error fetching user cart:', error);
+        console.error("Error fetching user cart:", error);
         throw error; // Reenvía el error para manejarlo en el contexto donde se llame a la función
       }
     };
     fetchCart();
   }, []);
- 
+  
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -34,6 +63,7 @@ const Navbar = () => {
           style={{ width: "70px", height: "50px", borderRadius: "100%" }}
           alt="Logo"
         />
+
         <div className={style.navbar}>
           <a className="nav-link active" aria-current="page" href="/home">
             Inicio
@@ -45,7 +75,7 @@ const Navbar = () => {
             Nosotros
           </a>
         </div>
-        <div className="d-flex"> {/* Contenedor para elementos finales */}
+        <div className="d-flex">
           <div>
             <Link to="/cart">
               <div style={{ display: "flex", justifyContent: "center" }}>
@@ -69,19 +99,29 @@ const Navbar = () => {
                     color: "white",
                   }}
                 >
-                {cartId?.length}
+                  {cartId?.length}
                 </div>
               </div>
             </Link>
           </div>
-          <div style={{ marginLeft: "10px" }}> {/* Separación del Login */}
-            <Link to={"/"}>
-              <img
-                src={inicio}
-                style={{ width: "30px", height: "30px", borderRadius: "100%" }}
-                alt="Logo"
-              />
-            </Link>
+
+          <div style={{ marginLeft: "10px" }}>
+            {" "}
+            {/* Separación del Login */}
+            <Dropdown>
+              <Dropdown.Toggle variant="btn btn-secondary" id="dropdown-basic">
+                Menu
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item href="/userDashboard">Mi Perfil</Dropdown.Item>
+                {infoUser === true ? (
+                  <Dropdown.Item href="/adminDashboard">Admin</Dropdown.Item>
+                ) : null}
+
+              <Dropdown.Item onClick={handleLogout}>Salir</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </div>
       </div>

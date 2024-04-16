@@ -1,5 +1,7 @@
 .navbar {
-    display: flex;  
+  padding-left: 105px;
+  display: flex;  
+  justify-content: center;
 }
 .navbar a:hover{
   color: #ff5733; /* Cambia el color al pasar el ratón por encima */

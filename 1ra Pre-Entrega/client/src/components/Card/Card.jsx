@@ -2,14 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const Card = ({ _id, price, imagen, title, userId }) => {
+const Card = ({ _id, price, imagen, title }) => {
   const [cartId, setCartId] = useState();
 
+  const userId = localStorage.getItem('userId');
+  console.log('Local ', userId);
 
   const fetchCart = async () => {
     try {
       const response = await axios.get(`/api/carts/user/${userId}`);
       setCartId(response.data._id); // Ajusta según la propiedad correcta de la respuesta
+      console.log('MI CARRI', response);
     } catch (error) {
       console.error('Error fetching user cart:', error);
       throw error; // Reenvía el error para manejarlo en el contexto donde se llame a la función
@@ -28,6 +31,7 @@ const Card = ({ _id, price, imagen, title, userId }) => {
 
   useEffect(() => {
     const idUserFromLocalStorage = localStorage.getItem("userId");
+    console.log('Id', idUserFromLocalStorage);
     fetchCart(idUserFromLocalStorage);
     
   }, [userId]);

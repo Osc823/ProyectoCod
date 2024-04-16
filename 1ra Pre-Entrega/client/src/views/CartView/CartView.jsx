@@ -42,6 +42,8 @@ const CartView = ({ listCartProducts  }) => {
     const response = await axios.delete(`/api/carts/${infoCart._id}/product/${idProduct}/user/${infoCart.userId}`);
     if(response){
       console.log(lisCart);
+      console.log('reas',response);
+
     }
     
     setLisCart(lisCart.filter((product) => product._id !== idProduct));
