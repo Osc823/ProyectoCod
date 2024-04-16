@@ -49,4 +49,35 @@ routerCarts.post("/:cid/product/:pid/user/:uid", addProductCart);
 // Nueva ruta para finalizar la compra de un carrito
 routerCarts.post('/:cid/purchase', purchaseCart);
 
+// Eliminar un producto del carrito por su ID
+routerCarts.delete("/:cid/product/:pid/user/:uid",async(req, res) => {
+    const { cid, pid } = req.params; // Obtener los IDs del carrito y del producto desde los parámetros de la URL
+    const { uid } = req.params; // Obtener el ID del usuario desde los parámetros de la URL
+
+    try {
+        // Verificar si el carrito existe y pertenece al usuario
+        const userCart = await cartModel.findOne({ _id: cid, userId: uid });
+        if (!userCart) {
+            // Si el carrito no existe o no pertenece al usuario, devolver un error
+            return res.status(404).json({ error: "Cart not found for this user" });
+        }
+
+        // Eliminar el producto del carrito
+        const response = await cartModel.findOneAndUpdate(
+            { _id: cid },
+            { $pull: { products: { product: pid } } }, // Utiliza $pull para eliminar el producto del array de productos del carrito
+            { new: true }
+        );
+        console.log('Rta', response);
+
+        // Devolver una respuesta exitosa
+        res.status(200).json({ message: "Product removed from cart successfully", payload: response });
+    } catch (error) {
+        // Si ocurre un error en el proceso, devolver un mensaje de error genérico
+        console.error("Error while deleting product from cart:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+
 export default routerCarts;

@@ -9,7 +9,8 @@ import zapa5 from "../../assets/zapa5.png"
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const Cards = () => {
+// eslint-disable-next-line react/prop-types
+const Cards = ({userId}) => {
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const Cards = () => {
             description={card.description}
             imagen={card.imagen}
             price={card.price}
-  
+            userId={userId}
           />
         </div>
       ))}

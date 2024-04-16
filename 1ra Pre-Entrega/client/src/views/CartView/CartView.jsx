@@ -3,18 +3,29 @@ import { useEffect, useState } from "react";
 import style from "./cart.module.css";
 
 // eslint-disable-next-line react/prop-types
-const CartView = ({ listCartProducts }) => {
+const CartView = ({ listCartProducts  }) => {
   const [lisCart, setLisCart] = useState([]);
+  const [infoCart, setInfoCart] = useState()
+  const userIdFromLocalStorage = localStorage.getItem("userId");
+  
+  const fetchCart = async () => {
+    const response = await axios.get(`/api/carts/user/${userIdFromLocalStorage}`);
+    setInfoCart(response.data); 
+    
+  };
+  
 
   const miCarrito = async () => {
     try {
       const response = await axios.get(`/api/products/`);
       const allProducts = response.data;
+      // eslint-disable-next-line react/prop-types
       const cartProductIds = listCartProducts.map((product) => product.product);
       const filteredProducts = allProducts.filter((product) =>
         cartProductIds.includes(product._id)
       );
       const productsWithQuantity = filteredProducts.map((product) => {
+        // eslint-disable-next-line react/prop-types
         const cartProduct = listCartProducts.find((item) => item.product === product._id);
         return {
           ...product,
@@ -27,8 +38,13 @@ const CartView = ({ listCartProducts }) => {
     }
   };
 
-  const removeProduct = (id) => {
-    setLisCart(lisCart.filter((product) => product._id !== id));
+  const removeProduct = async (idProduct) => {
+    const response = await axios.delete(`/api/carts/${infoCart._id}/product/${idProduct}/user/${infoCart.userId}`);
+    if(response){
+      console.log(lisCart);
+    }
+    
+    setLisCart(lisCart.filter((product) => product._id !== idProduct));
   };
 
   const increaseQuantity = (id) => {
@@ -59,6 +75,7 @@ const CartView = ({ listCartProducts }) => {
   };
 
   useEffect(() => {
+    fetchCart()
     miCarrito(); // Obtener todos los productos y actualizar el carrito
   }, [listCartProducts]); // Escucha cambios en listCartProducts para volver a obtener productos si cambian
 

@@ -9,7 +9,6 @@ import axios from "axios";
 
 const Navbar = () => {
   const [cartId, setCartId] = useState(null);
-  console.log('Mi carrito', cartId);
 
   useEffect(() => {
     const fetchCart = async () => {

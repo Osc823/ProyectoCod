@@ -2,11 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const Card = ({ _id, price, imagen, title }) => {
-  const [cartId, setCartId] = useState(null);
-  const [idUser, setIdUser] = useState("");
+const Card = ({ _id, price, imagen, title, userId }) => {
+  const [cartId, setCartId] = useState();
 
-  const fetchCart = async (userId) => {
+
+  const fetchCart = async () => {
     try {
       const response = await axios.get(`/api/carts/user/${userId}`);
       setCartId(response.data._id); // Ajusta según la propiedad correcta de la respuesta
@@ -19,7 +19,7 @@ const Card = ({ _id, price, imagen, title }) => {
   const addToCart = async () => {
     try {
       console.log('Nombre', cartId);
-      await axios.post(`/api/carts/${cartId}/product/${_id}/user/${idUser}`);
+      await axios.post(`/api/carts/${cartId}/product/${_id}/user/${userId}`);
       console.log("Producto agregado al carrito exitosamente");
     } catch (error) {
       console.error("Error al agregar el producto al carrito:", error);
@@ -28,11 +28,9 @@ const Card = ({ _id, price, imagen, title }) => {
 
   useEffect(() => {
     const idUserFromLocalStorage = localStorage.getItem("userId");
-    setIdUser(idUserFromLocalStorage);
-    if (idUserFromLocalStorage) {
-      fetchCart(idUserFromLocalStorage);
-    }
-  }, [idUser]);
+    fetchCart(idUserFromLocalStorage);
+    
+  }, [userId]);
 
   return (
     <div className="d-flex justify-content-center">
