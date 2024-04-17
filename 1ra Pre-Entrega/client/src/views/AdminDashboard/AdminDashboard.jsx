@@ -3,9 +3,11 @@ import style from "./admindashboard.module.css";
 // import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import perfil from "../../assets/usuario.png"
+import perfil from "../../assets/usuario.png";
 import Estadisticas from "./EstadisticasView/Estadisticas";
 import UsuariosList from "./UsuariosView/UsuariosList";
+import ProductsView from "./Productos/ProductsView";
+import CrearProductoView from "./CrearProductoView/CrearProductoView";
 
 const AdminDashboard = () => {
   const [componenteActual, setComponenteActual] = useState("A");
@@ -136,9 +138,44 @@ const AdminDashboard = () => {
                 <li>
                   <Link
                     onClick={() => {
-                      handleSelect("E");
+                      handleSelect("D");
                     }}
                     href="#"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      height: "70px",
+                      width: "100%",
+                      paddingInline: "5px",
+                      backgroundColor: selectedLink === "D" ? color : "white",
+                      color: selectedLink === "D" ? "white" : "black",
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="35"
+                      height="35"
+                      fill={selectedLink === "D" ? "white" : "black"}
+                      className="bi bi-journal-plus"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z"
+                      />
+                      <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
+                      <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+                    </svg>{" "}
+                    &nbsp; Agregar Producto
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    onClick={() => {
+                      handleSelect("E");
+                      // setShowModal(true)
+                    }}
+                    href="/"
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -154,57 +191,21 @@ const AdminDashboard = () => {
                       width="35"
                       height="35"
                       fill={selectedLink === "E" ? "white" : "black"}
-                      className="bi bi-journal-plus"
+                      className="bi bi-box-arrow-right"
                       viewBox="0 0 16 16"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5z"
+                        d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
                       />
-                      <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
-                      <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+                      />
                     </svg>{" "}
-                    &nbsp; Agregar Producto
-                  </Link>
+                    &nbsp; Salir
+                  </a>
                 </li>
-                <li>
-                <a
-                  onClick={() => {
-                    handleSelect('F')
-                    // setShowModal(true)
-                  }}
-                  href="/"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    height: '70px',
-                    width: '100%',
-                    paddingInline: '5px',
-                    backgroundColor: selectedLink === 'F' ? color : 'white',
-                    color: selectedLink === 'F' ? 'white' : 'black',
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="35"
-                    height="35"
-                    fill={selectedLink === 'F' ? 'white' : 'black'}
-                    className="bi bi-box-arrow-right"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-                    />
-                  </svg>{' '}
-                  &nbsp; Salir
-                </a>
-              </li>
-  
               </ul>
             </div>
           </div>
@@ -228,13 +229,21 @@ const AdminDashboard = () => {
             </nav>
             {componenteActual === "A" ? (
               <div className={`col-8 ${style.content}`}>
-                <Estadisticas/>
+                <Estadisticas />
               </div>
-            ) : componenteActual === 'B' ? (
+            ) : componenteActual === "B" ? (
               <div className={`col-9 ${style.content}`}>
                 <UsuariosList />
               </div>
-            )  : null }
+            ) : componenteActual === "C" ? (
+              <div className={`col-9 ${style.content}`}>
+                <ProductsView />
+              </div>
+            ) : componenteActual === "D" ? (
+              <div className={`col-9 ${style.content}`}>
+                <CrearProductoView />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

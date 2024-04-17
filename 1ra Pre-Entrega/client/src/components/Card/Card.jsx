@@ -2,17 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const Card = ({ _id, price, imagen, title }) => {
+const Card = ({ _id, price, thumbnail, title }) => {
   const [cartId, setCartId] = useState();
 
+  
+
   const userId = localStorage.getItem('userId');
-  console.log('Local ', userId);
 
   const fetchCart = async () => {
     try {
       const response = await axios.get(`/api/carts/user/${userId}`);
       setCartId(response.data._id); // Ajusta según la propiedad correcta de la respuesta
-      console.log('MI CARRI', response);
     } catch (error) {
       console.error('Error fetching user cart:', error);
       throw error; // Reenvía el error para manejarlo en el contexto donde se llame a la función
@@ -31,7 +31,6 @@ const Card = ({ _id, price, imagen, title }) => {
 
   useEffect(() => {
     const idUserFromLocalStorage = localStorage.getItem("userId");
-    console.log('Id', idUserFromLocalStorage);
     fetchCart(idUserFromLocalStorage);
     
   }, [userId]);
@@ -39,7 +38,7 @@ const Card = ({ _id, price, imagen, title }) => {
   return (
     <div className="d-flex justify-content-center">
       <div className="card" style={{ width: "80%" }}>
-        <img src={imagen} alt="Descripción de la imagen" className="card-img-top" />
+        <img src={thumbnail} alt="Descripción de la imagen" className="card-img-top" />
         <div className="card-body text-center">
           <h5 className="card-title">{title}</h5>
           <p className="card-text">{price}.</p>

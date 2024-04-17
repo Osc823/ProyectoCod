@@ -30,18 +30,20 @@ const CardCategoria = ({ product }) => {
               _id={card.code}
               title={card.title}
               description={card.description}
-              imagen={card.thumbnail}
+              thumbnail={card.thumbnail}
               price={card.price}
             />
           </div>
         ))}
       </div>
-      <div className="pagination">
-        <button onClick={prevPage} disabled={currentPage === 1}>
+      <div className="d-flex justify-content-center">
+        <button onClick={prevPage} className="btn btn-info" disabled={currentPage === 1}>
           Prev
         </button>
-        {currentPage}
-        <button onClick={nextPage} disabled={indexOfLastProduct >= product.length}>
+        <h4 className="text-center p-1">
+          {currentPage}
+        </h4>
+        <button onClick={nextPage} className="btn btn-info" disabled={indexOfLastProduct >= product.length}>
           Next
         </button>
       </div>

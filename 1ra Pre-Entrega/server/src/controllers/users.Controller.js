@@ -1,5 +1,17 @@
 import { userModel } from "../services/models/user.model.js";
 
+// Trae a todos los usuarios
+const getAllUsersController = async (req, res) => {
+  try {
+    const allUsers = await userModel.find();
+    console.log('Todos ', allUsers);
+    res.status(200).json({ success: true, payload: allUsers });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 // Buscar Usuario por correo
 const searchUserByEmail = async (req, res) => {
   try {
@@ -40,7 +52,7 @@ const deleteUserHandler = async (req, res) => {
 const sleepUserByIdHandler = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await userModel.findByIdAndUpdate(id, { isSuspended: true }, { new: true });
+    const user = await userModel.findByIdAndUpdate(id, { hide: false }, { new: true });
     res.status(200).json(`Usuario suspendido con éxito: ${user}`);
   } catch (error) {
     console.error(error);
@@ -52,7 +64,7 @@ const sleepUserByIdHandler = async (req, res) => {
 const restoreUserByIdHandler = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await userModel.findByIdAndUpdate(id, { isSuspended: false }, { new: true });
+    const user = await userModel.findByIdAndUpdate(id, { hide: true }, { new: true });
     res.status(200).json(`Usuario restaurado con éxito: ${user}`);
   } catch (error) {
     console.error(error);
@@ -64,7 +76,7 @@ const restoreUserByIdHandler = async (req, res) => {
 const allowAdminPermissionsHandler = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await userModel.findByIdAndUpdate(id, { userType: "admin" }, { new: true });
+    const user = await userModel.findByIdAndUpdate(id, { isAdmin: true }, { new: true });
     res.status(200).json(user);
   } catch (error) {
     res.status(404).json("Usuario no encontrado");
@@ -75,7 +87,7 @@ const allowAdminPermissionsHandler = async (req, res) => {
 const forbidAdminPermissionsHandler = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await userModel.findByIdAndUpdate(id, { userType: "user" }, { new: true });
+    const user = await userModel.findByIdAndUpdate(id, { isAdmin: false }, { new: true });
     res.status(200).json(user);
   } catch (error) {
     res.status(404).json("Usuario no encontrado");
@@ -88,5 +100,6 @@ export {
   sleepUserByIdHandler,
   restoreUserByIdHandler,
   forbidAdminPermissionsHandler,
-  allowAdminPermissionsHandler
+  allowAdminPermissionsHandler,
+  getAllUsersController
 };

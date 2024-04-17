@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  hide:{
+    type: Boolean,
+    default: true,
+  },
   cartId: { type: mongoose.Schema.Types.ObjectId, ref: "cart" }
 });
 

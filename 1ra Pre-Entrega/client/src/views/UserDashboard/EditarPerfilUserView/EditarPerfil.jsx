@@ -1,13 +1,31 @@
-import  { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 const EditarPerfil = () => {
   // Estado para los datos del usuario
+  const [infoUser, setInfoUser] = useState({
+    nombre: '',
+    apellido: '',
+    email: ''
+  });
+  const userInfoFromLocalStorage = localStorage.getItem("userEmail");
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(
+        `/users/byEmail/${userInfoFromLocalStorage}`
+      );
+      setInfoUser(response.data.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   const [userData, setUserData] = useState({
     nombre: '',
     apellido: '',
-    email: '',
-    telefono: ''
+    email: ''
   });
 
   // Función para manejar cambios en los campos del formulario
@@ -26,6 +44,10 @@ const EditarPerfil = () => {
     console.log('Datos del usuario actualizados:', userData);
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <div className="container mt-5">
       <h2>Editar Perfil</h2>
@@ -36,7 +58,7 @@ const EditarPerfil = () => {
             type="text" 
             placeholder="Ingrese su nombre" 
             name="nombre" 
-            value={userData.nombre} 
+            value={userData.first_name || infoUser.first_name} 
             onChange={handleInputChange} 
           />
         </Form.Group>
@@ -46,7 +68,7 @@ const EditarPerfil = () => {
             type="text" 
             placeholder="Ingrese su apellido" 
             name="apellido" 
-            value={userData.apellido} 
+            value={userData.last_name || infoUser.last_name} 
             onChange={handleInputChange} 
           />
         </Form.Group>
@@ -56,20 +78,11 @@ const EditarPerfil = () => {
             type="email" 
             placeholder="Ingrese su email" 
             name="email" 
-            value={userData.email} 
+            value={userData.email || infoUser.email} 
             onChange={handleInputChange} 
           />
         </Form.Group>
-        <Form.Group controlId="telefono">
-          <Form.Label>Teléfono</Form.Label>
-          <Form.Control 
-            type="tel" 
-            placeholder="Ingrese su teléfono" 
-            name="telefono" 
-            value={userData.telefono} 
-            onChange={handleInputChange} 
-          />
-        </Form.Group>
+        <hr />
         <Button variant="primary" type="submit">
           Actualizar Datos
         </Button>

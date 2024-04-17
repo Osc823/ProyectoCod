@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { allowAdminPermissionsHandler, deleteUserHandler, forbidAdminPermissionsHandler, restoreUserByIdHandler, searchUserByEmail, sleepUserByIdHandler } from '../controllers/users.Controller.js';
+import {getAllUsersController, allowAdminPermissionsHandler, deleteUserHandler, forbidAdminPermissionsHandler, restoreUserByIdHandler, searchUserByEmail, sleepUserByIdHandler } from '../controllers/users.Controller.js';
 
 const routerUsers = Router();
 
@@ -13,6 +13,8 @@ routerUsers.get("/", (req, res) => {
       user: req.session.user
   })
 })
+
+routerUsers.get("/allUsers/", getAllUsersController); 
 
 routerUsers.get('/byEmail/:email', searchUserByEmail)
 //Eliminar usuario
