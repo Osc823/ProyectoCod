@@ -162,9 +162,9 @@ const UsuariosList = () => {
         <tbody>
           {allUsers.length > 0 ? (
             allUsers?.map((ele, index) => (
-              <tr key={ele.id}>
+              <tr key={index}>
                 <th
-                  style={{ backgroundColor: ele.isAdmin ? '#edd55e' : '#9bdb92' }}
+                  style={{ backgroundColor: !ele.hide ? '#edd55e' : '#9bdb92' }}
                   scope="row"
                 >
                   {index + 1}
@@ -172,19 +172,19 @@ const UsuariosList = () => {
                
                 {/* Nombre Completo */}
                 <td
-                  style={{ backgroundColor: ele.isAdmin ? '#edd55e' : '#9bdb92' }}
+                  style={{ backgroundColor: !ele.hide ? '#edd55e' : '#9bdb92' }}
                 >
                   {ele.first_name}
                 </td>
                 {/* Email */}
                 <td
-                  style={{ backgroundColor: ele.isAdmin ? '#edd55e' : '#9bdb92' }}
+                  style={{ backgroundColor: !ele.hide ? '#edd55e' : '#9bdb92' }}
                 >
                   {ele.email}
                 </td>
                 {/* Tipo Usuario */}
                 <td
-                  style={{ backgroundColor: ele.isAdmin ? '#edd55e' : '#9bdb92' }}
+                  style={{ backgroundColor: !ele.hide ? '#edd55e' : '#9bdb92' }}
                 >
                   {ele.isAdmin == false ? (
                     <button type="button" className="btn btn-success" disabled>
@@ -220,9 +220,9 @@ const UsuariosList = () => {
                 </td>
                 {/* Rol */}
                 <td
-                  style={{ backgroundColor: ele.isAdmin ? '#edd55e' : '#9bdb92' }}
+                  style={{ backgroundColor: !ele.hide ? '#edd55e' : '#9bdb92' }}
                 >
-                  {ele.userType === 'user' ? (
+                  {ele.isAdmin === false ? (
                     <button
                       onClick={(e) => handlerUserToAdmin(e, ele._id)}
                       type="button"
@@ -263,7 +263,7 @@ const UsuariosList = () => {
                 </td>
                 {/* Acciones */}
                 <td
-                  style={{ backgroundColor: ele.isAdmin ? '#edd55e' : '#9bdb92', width: "150px"}}
+                  style={{ backgroundColor: !ele.hide ? '#edd55e' : '#9bdb92', width: "150px"}}
                 >
                   <button
                     className="btn btn-danger"

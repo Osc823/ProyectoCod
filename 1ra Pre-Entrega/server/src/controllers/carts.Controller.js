@@ -2,17 +2,20 @@
 // import cartsService from "../services/factory.js";
 
 //Repository
-import {cartsService} from "../services/service.js"
+import { cartModel } from "../services/models/cart.model.js";
+import {cartsService, ticketService} from "../services/service.js"
+import { sendEmailTicket } from "./email.controller.js";
 
 // import cartDao from "../services/daos/mongo/cart.dao.js";
 
 const purchaseCart = async(req, res, next) => {
-  const cartId = req.params.cid;
-  const userId = req.user.id; 
+  const {cartId, userId, email} = req.user;
+
 
   try {
       // Obtener el carrito y sus productos
-      const cart =  await cartsService.getCartById(cartId).populate('products.product');
+      const cart =  await cartsService.getCartById(cartId._id)
+      console.log('Mi carrito', cart);
       const productsToPurchase = cart.products;
 
       // Inicializar arrays para productos comprados y no comprados
@@ -36,9 +39,16 @@ const purchaseCart = async(req, res, next) => {
           }
       }
 
-      // Generar el ticket
-      const ticket = await TicketService.generateTicket(userId, purchasedProducts);
+      const ticketPost = {
+        amount: 0,
+        purchaser: email,
+        products:cart.products
+      }
 
+      // Generar el ticket
+      const ticket = await ticketService.createTicket(ticketPost);
+      await sendEmailTicket(email, ticket);
+      
       // Actualizar el carrito con los productos no comprados
       cart.products = cart.products.filter(productData => !failedProducts.includes(productData.product));
       await cart.save();
@@ -81,24 +91,67 @@ const cartById =  async (req, res) => {
     }
   }
 const addProductCart = async (req, res) => {
-    const { cid, pid, uid } = req.params;
+    const { pid} = req.params;
+    console.log('MI INFO', req.user);
 
-    console.log('Raro esto eh',cid,'producto', pid, 'user', uid);
+    const {cartId, id} = req.user;
+
     try {
-      if (cid && pid) {
-        const response = await cartsService.addToCart(cid, pid, uid);
+      if (cartId && pid) {
+        const response = await cartsService.addToCart(cartId._id, pid, id);
         res.json(response);
       } else {
         res.status(400).json({ error: "Falta el ID del carrito o del producto" });
       }
     } catch (error) {
-      req.logger.error(`Error al agregar producto al carrito ${cid}:`, error);
+      req.logger.error(`Error al agregar producto al carrito ${cartId}:`, error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
+const getAllProductsByUser = async(req, res)=> {
+  try {
+    const {cartId} = req.user;
+    const allProducts = await cartsService.getAllProducts(cartId)
+    res.status(200).send({products: allProducts})
+  } catch (error) {
+    req.logger.error(`Error al obtener productos del carrito:`, error);
+  }
+
+}
+
+const deleteProducInCart = async(req, res) => {
+  const { pid } = req.params; // Obtener los IDs del carrito y del producto desde los parámetros de la URL
+  const { cartId, id } = req.user; // Obtener el ID del usuario desde los parámetros de la URL
+
+  try {
+      // Verificar si el carrito existe y pertenece al usuario
+      console.log('carr', cartId);
+      const userCart = await cartsService.getCartById(cartId._id);
+
+      if (!userCart) {
+          // Si el carrito no existe o no pertenece al usuario, devolver un error
+          return res.status(404).json({ error: "Cart not found for this user" });
+      }
+
+      // Eliminar el producto del carrito
+      const response = await cartsService.deleteProducInCart(cartId._id, pid)
+      console.log('Rta', response);
+
+      // Devolver una respuesta exitosa
+      res.status(200).json({ message: "Product removed from cart successfully", payload: response });
+  } catch (error) {
+      // Si ocurre un error en el proceso, devolver un mensaje de error genérico
+      console.error("Error while deleting product from cart:", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 export {
     postCart,
     cartById,
     addProductCart,
-    purchaseCart
+    purchaseCart,
+    getAllProductsByUser,
+    deleteProducInCart
 }

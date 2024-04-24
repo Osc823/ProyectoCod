@@ -1,29 +1,29 @@
 // import logo from './tu-logo.png'; // Importa la ruta de tu logo
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import logo from "../../assets/logo2.png";
 import Dropdown from "react-bootstrap/Dropdown";
 import style from "./navbar.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 
 const Navbar = () => {
-  const [cartId, setCartId] = useState(null);
-  console.log('Xaaa', cartId);
-  const [infoUser, setInfoUser] = useState();
-  const userInfoFromLocalStorage = localStorage.getItem("userEmail");
-  console.log('Si lo trae',infoUser );
+  // const [cartId, setCartId] = useState(null);
+  // console.log('Xaaa', cartId);
+  // const [infoUser, setInfoUser] = useState();
+  // const userInfoFromLocalStorage = localStorage.getItem("userEmail");
+  // console.log('Si lo trae',infoUser );
   const navigate = useNavigate()
 
   
   
-  const fetchUser = async () => {
-    console.log('Que llea', userInfoFromLocalStorage);
-    const response = await axios.get(
-      `/users/byEmail/${userInfoFromLocalStorage}`
-    );
-    setInfoUser(response.data.data.isAdmin);
-    console.log('Correo', response);
-  };
+  // const fetchUser = async () => {
+  //   console.log('Que llea', userInfoFromLocalStorage);
+  //   const response = await axios.get(
+  //     `/users/byEmail/${userInfoFromLocalStorage}`
+  //   );
+  //   setInfoUser(response.data.data.isAdmin);
+  //   console.log('Correo', response);
+  // };
 
   // Función para limpiar el localStorage y redirigir a la página de inicio
   const handleLogout = () => {
@@ -33,28 +33,28 @@ const Navbar = () => {
   
   };
 
-  useEffect(() => {
-    fetchUser();
+  // useEffect(() => {
+  //   fetchUser();
     
-    const fetchCart = async () => {
-      try {
-        const userIdFromLocalStorage = localStorage.getItem("userId");
+  //   const fetchCart = async () => {
+  //     try {
+  //       const userIdFromLocalStorage = localStorage.getItem("userId");
         
-        if (userIdFromLocalStorage) {
-          const response = await axios.get(
-            `/api/carts/user/${userIdFromLocalStorage}`
-          );
-          console.log('Aqui esta!!!', response);
-          setCartId(response.data.products); // Ajusta según la propiedad correcta de la respuesta
-        }
-      } catch (error) {
-        console.error("Error fetching user cart:", error);
-        throw error; // Reenvía el error para manejarlo en el contexto donde se llame a la función
-      }
-    };
-    fetchCart();
-  }, []);
-  
+  //       if (userIdFromLocalStorage) {
+  //         const response = await axios.get(
+  //           `/api/carts/user/${userIdFromLocalStorage}`
+  //         );
+  //         console.log('Aqui esta!!!', response);
+  //         setCartId(response.data.products); // Ajusta según la propiedad correcta de la respuesta
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user cart:", error);
+  //       throw error; // Reenvía el error para manejarlo en el contexto donde se llame a la función
+  //     }
+  //   };
+  //   fetchCart();
+  // }, []);
+  const infoUser = true;
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -99,7 +99,7 @@ const Navbar = () => {
                     color: "white",
                   }}
                 >
-                  {cartId?.length}
+                  {0}
                 </div>
               </div>
             </Link>

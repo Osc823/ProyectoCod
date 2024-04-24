@@ -10,6 +10,10 @@ const cartSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" } // Nuevo campo para almacenar el ID del usuario asociado al carrito
 });
 
+cartSchema.pre("findOne", function () {
+  this.populate("products");
+});
+
 const cartModel = mongoose.model("cart", cartSchema); // Cambiar el nombre del modelo a "Cart"
 
 export { cartModel };

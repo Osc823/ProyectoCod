@@ -3,40 +3,40 @@ import { useEffect, useState } from "react";
 import style from "./cart.module.css";
 
 // eslint-disable-next-line react/prop-types
-const CartView = ({ listCartProducts  }) => {
+const CartView = () => {
   const [lisCart, setLisCart] = useState([]);
   const [infoCart, setInfoCart] = useState()
-  const userIdFromLocalStorage = localStorage.getItem("userId");
+ 
   
   const fetchCart = async () => {
-    const response = await axios.get(`/api/carts/user/${userIdFromLocalStorage}`);
-    setInfoCart(response.data); 
+    const response = await axios.get(`/api/carts/`);
+    setInfoCart(response); 
     
   };
   
 
-  const miCarrito = async () => {
-    try {
-      const response = await axios.get(`/api/products/`);
-      const allProducts = response.data;
-      // eslint-disable-next-line react/prop-types
-      const cartProductIds = listCartProducts.map((product) => product.product);
-      const filteredProducts = allProducts.filter((product) =>
-        cartProductIds.includes(product._id)
-      );
-      const productsWithQuantity = filteredProducts.map((product) => {
-        // eslint-disable-next-line react/prop-types
-        const cartProduct = listCartProducts.find((item) => item.product === product._id);
-        return {
-          ...product,
-          quantity: cartProduct.quantity
-        };
-      });
-      setLisCart(productsWithQuantity);
-    } catch (error) {
-      console.error('Error al obtener productos:', error);
-    }
-  };
+  // const miCarrito = async () => {
+  //   try {
+  //     const response = await axios.get(`/api/products/`);
+  //     const allProducts = response.data;
+  //     // eslint-disable-next-line react/prop-types
+  //     const cartProductIds = listCartProducts.map((product) => product.product);
+  //     const filteredProducts = allProducts.filter((product) =>
+  //       cartProductIds.includes(product._id)
+  //     );
+  //     const productsWithQuantity = filteredProducts.map((product) => {
+  //       // eslint-disable-next-line react/prop-types
+  //       const cartProduct = listCartProducts.find((item) => item.product === product._id);
+  //       return {
+  //         ...product,
+  //         quantity: cartProduct.quantity
+  //       };
+  //     });
+  //     setLisCart(productsWithQuantity);
+  //   } catch (error) {
+  //     console.error('Error al obtener productos:', error);
+  //   }
+  // };
 
   const removeProduct = async (idProduct) => {
     const response = await axios.delete(`/api/carts/${infoCart._id}/product/${idProduct}/user/${infoCart.userId}`);
@@ -78,8 +78,8 @@ const CartView = ({ listCartProducts  }) => {
 
   useEffect(() => {
     fetchCart()
-    miCarrito(); // Obtener todos los productos y actualizar el carrito
-  }, [listCartProducts]); // Escucha cambios en listCartProducts para volver a obtener productos si cambian
+    // miCarrito(); // Obtener todos los productos y actualizar el carrito
+  }, []); // Escucha cambios en listCartProducts para volver a obtener productos si cambian
 
   return (
     <div>
@@ -102,8 +102,8 @@ const CartView = ({ listCartProducts  }) => {
               <td className={style.tdStyle}>{index + 1}</td>
               <td className={style.tdStyle}>
                 <img
-                  src={ele.image}
-                  style={{ width: "285px", height: "177px" }}
+                  src={ele.thumbnail}
+                  style={{ width: "220px", height: "177px" }}
                   alt="Producto"
                 />
                 <p>{ele.title}</p>

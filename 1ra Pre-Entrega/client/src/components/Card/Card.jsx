@@ -22,7 +22,7 @@ const Card = ({ _id, price, thumbnail, title }) => {
   const addToCart = async () => {
     try {
       console.log('Nombre', cartId);
-      await axios.post(`/api/carts/${cartId}/product/${_id}/user/${userId}`);
+      await axios.post(`/api/carts/product/${_id}`);
       console.log("Producto agregado al carrito exitosamente");
     } catch (error) {
       console.error("Error al agregar el producto al carrito:", error);

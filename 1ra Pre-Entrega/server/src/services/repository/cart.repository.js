@@ -20,5 +20,10 @@ export default class CartRepository{
     addToCart = (cartId, productId,userId) => {
         return this.dao.addToCart(cartId, productId,userId)
     }
-
+    getAllProducts =(cartId) => {
+        return this.dao.getAllProducts(cartId)
+    }
+    deleteProducInCart = (cartId, productId) =>{
+        return this.dao.deleteProducInCart(cartId, productId)
+    }
 }

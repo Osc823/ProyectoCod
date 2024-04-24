@@ -64,6 +64,38 @@ export const sendEmail = (req, res) => {
   }
 };
 
+export const sendEmailTicket = async (email, ticket) => {
+  try {
+    // Destructurar las opciones de correo para mayor claridad
+    const mailOptions = {
+      from: "Coder Test - " + config.gmailAccount,
+      to: email,
+      subject: "GRACIAS!! detalles de tu compra",
+      html: `<div>
+              ${ticket}
+            </div>`,
+      attachments: [],
+    };
+
+    // Enviar correo electrónico usando transporter y manejar la respuesta
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        req.logger.error(error);
+        return res.status(400).send({ message: "Error", payload: error });
+      }
+
+      req.logger.info("Mensaje enviado:", info.messageId);
+      res.send({ message: "Success", payload: info });
+    });
+  } catch (error) {
+    req.logger.error(error);
+    res.status(500).send({
+      error: error,
+      message: "No se pudo enviar el email desde:" + config.gmailAccount,
+    });
+  }
+}
+
 const mailOptionsWithAttachments = {
   from: "Coder Test - " + config.gmailAccount,
   to: `${config.gmailAccount};oscar00gaona@gmail.com; seleccion.alcantara145@gmail.com`,

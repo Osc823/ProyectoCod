@@ -4,8 +4,8 @@ import router from "./routes/main.router.js";
 import handlebars from "express-handlebars";
 import __dirname from "./dirname.js";
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 import productDao from "./services/daos/mongo/product.dao.js";
-import messageDao from "./services/daos/mongo/message.dao.js";
 import Handlebars from "handlebars";
 import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
 import config from "./config/config.js";
@@ -18,10 +18,14 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js'
 
 import { addLogger } from "./config/logger_CUSTOM.js";
+import { userModel } from "./services/models/user.model.js";
 
 //Socket Server
 const app = express();
-app.use(cors());
+app.use(cors({
+  credentials:true,
+  origin:true
+}));
 
 
 const MONGO_URL = config.mongoUrl
@@ -37,10 +41,39 @@ const mongoInstance = async () => {
 };
 mongoInstance();
 
+const deleteUserBy2Days = async () => {
+  try {
+    const response = await userModel.find();
+    const fechaActual = new Date().toISOString();
+    const cortFechaActual = fechaActual.slice(0, fechaActual.indexOf("T"));
+    
+    let usuariosEliminados = 0; 
+    
+    response.forEach(async (user) => {
+      const separarFecha = user.created_at.toISOString();
+      const trimmedString = separarFecha.slice(0, separarFecha.indexOf("T"));
+      
+      const diffDays = Math.floor((new Date(cortFechaActual) - new Date(trimmedString)) / (1000 * 60 * 60 * 24));
+      
+      if (diffDays >= 2) {
+        // Eliminar el usuario
+        await userModel.findByIdAndDelete(user._id);
+        console.log(`Usuario eliminado: ${user._id}`);
+        usuariosEliminados++; // Incrementamos el contador de usuarios eliminados
+      }
+    });
+    
+    console.log("Proceso de eliminación de usuarios completado.");
+  } catch (error) {
+    console.error("Error al eliminar usuarios inactivos:", error);
+  }
+};
 
 
 const httpServer = app.listen(config.port, () => {
   console.log("Servidor escuchando por el puerto: " + config.port);
+
+  deleteUserBy2Days()
 });
 
 //Instancia websocket
@@ -49,6 +82,8 @@ const io = new Server(httpServer);
 //Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser('Secreto'))
 
 //Configuracion de plantilla de motor engine
 app.engine(
@@ -71,32 +106,27 @@ app.use(express.static(`${__dirname}/public`));
 
 
 // Configuracion de Session
-app.use(session(
-  {
-      //ttl: Time to live in seconds,
-      //retries: Reintentos para que el servidor lea el archivo del storage.
-      //path: Ruta a donde se buscará el archivo del session store.
-      // Usando --> session-file-store
-      // store: new fileStore({ path: "./sessions", ttl: 15, retries: 0 }),
+// app.use(session(
+//   {
 
-      // Usando --> connect-mongo
-      store: MongoStore.create({
-          mongoUrl: MONGO_URL,
-          //mongoOptions --> opciones de confi para el save de las sessions
-          mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-          ttl: 10 * 60
-      }),
+//       // Usando --> connect-mongo
+//       store: MongoStore.create({
+//           mongoUrl: MONGO_URL,
+//           //mongoOptions --> opciones de confi para el save de las sessions
+//           mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+//           ttl: 10 * 60
+//       }),
 
-      secret: "coderS3cr3t",
-      resave: false, // guarda en memoria
-      saveUninitialized: true //lo guarda a penas se crea
-  }
-))
+//       secret: "coderS3cr3t",
+//       resave: false, // guarda en memoria
+//       saveUninitialized: true //lo guarda a penas se crea
+//   }
+// ))
 
 // Middleware de passport
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 //Rutas
 // **Logger

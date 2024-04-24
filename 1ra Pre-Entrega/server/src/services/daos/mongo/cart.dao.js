@@ -1,4 +1,5 @@
 import { cartModel } from "../../models/cart.model.js";
+import { userModel } from "../../models/user.model.js";
 
 class CartDao {
   // Obtener todos los carritos
@@ -6,6 +7,11 @@ class CartDao {
   constructor() {
    console.log("Working students with Database persistence in mongodb");
 }
+
+  async getAllProducts(cartId) {
+    const response = this.getCartById(cartId);
+    return response.products;
+  }
 
   async getCarts() {
     return cartModel.find();
@@ -34,12 +40,13 @@ class CartDao {
   // Agregar un producto al carrito por su ID
   async addToCart(cartId, productId, userId) {
     try {
-      console.log('Qie estas', cartId, productId, userId);
       // Buscar el carrito por su ID y el ID del usuario
-      const cart = await cartModel.findOne({ _id: cartId, userId: userId });
+      const cart = await cartModel.findOne({ _id: cartId });
       console.log('Micarrito', cart);
+
+
       if (!cart) {
-        console.error(`Error: Carrito con ID ${cartId} no encontrado para el usuario ${userId}.`);
+        console.error(`Error: Carrito con ID ${cartId} no encontrado para el usuario ${cartId}.`);
         return null; // Retornar null si el carrito no se encuentra
       }
   
@@ -62,13 +69,21 @@ class CartDao {
       }
   
       // Guardar los cambios en la base de datos
-      console.log(`Producto ${productId} agregado al carrito con ID ${cartId}.`);
+      console.log(`Producto ${productId} agregado al carrito con ID ${cart}.`);
       return await cart.save();
   
     } catch (error) {
       console.error("Error al agregar producto al carrito:", error.message);
       throw error; // Propagar el error para que se maneje en el controlador
     }
+  }
+
+  async deleteProducInCart (cartId, productId ) {
+    return await cartModel.findOneAndUpdate(
+      { _id: cartId},
+      { $pull: { products: { product: productId } } }, // Utiliza $pull para eliminar el producto del array de productos del carrito
+      { new: true }
+  );
   }
 }
 

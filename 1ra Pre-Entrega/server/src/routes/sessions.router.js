@@ -1,10 +1,10 @@
 import { Router } from "express";
 import passport from "passport";
-import { githubcallback } from "../controllers/passportGithub.Controller.js";
+import { githubcallback } from "../controllers/Auth.Controller.js";
 import {
   loginPassportLocal,
   registerPassportLocal,
-} from "../controllers/passportLocal.Controller.js";
+} from "../controllers/Auth.Controller.js";
 
 const router = Router();
 
@@ -24,12 +24,12 @@ router.get("/githubcallback",passport.authenticate("github", { failureRedirect: 
 =============================================*/
 
 // Register
-router.post("/register", passport.authenticate("register", {failureRedirect: "api/session/fail-register",}),
+router.post("/register", passport.authenticate("register", {failureRedirect: "api/session/fail-register", session: false }),
   registerPassportLocal
 );
 
 // Login
-router.post("/login", passport.authenticate("login", { failureRedirect: "/api/sessions/fail-login" }),loginPassportLocal);
+router.post("/login", passport.authenticate("login", { failureRedirect: "/api/sessions/fail-login", session: false }),loginPassportLocal);
 
 
 router.get("/fail-register", (req, res) => {

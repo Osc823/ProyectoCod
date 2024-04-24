@@ -1,13 +1,36 @@
 import passport from "passport";
-import passportLocal from "passport-local";
+import passportLocal, { Strategy } from "passport-local";
 import GitHubStrategy from "passport-github2";
 import { userModel } from "../services/models/user.model.js";
 import { createHash, isValidPassword } from "../dirname.js";
+import { cartModel } from "../services/models/cart.model.js";
+import CartRepository from "../services/repository/cart.repository.js";
+import { cartsService } from "../services/service.js";
+import jwtStrategy from "passport-jwt";
+import config from "./config.js";
+
 
 //  Declaramos estrategia
 const localStrategy = passportLocal.Strategy;
 
+const JWTStrategy = jwtStrategy.Strategy;
+
+const extractJWT = jwtStrategy.ExtractJwt;
+
+const cookieExtractor = (req) => {
+  let token = null
+  if (req && req.cookies) {
+    token = req.cookies['jwtToken']
+    console.log('toke', token);
+  }
+  console.log('Req.cookie', req.cookies);
+  console.log('Tokenn', token);
+  return token;
+}
+
 const initializePassport = () => {
+
+
   // Usando GitHub
   passport.use(
     "github",
@@ -71,12 +94,14 @@ const initializePassport = () => {
             done(null, false);
           }
 
+          const createCart = await cartsService.createCart();
+
           const user = {
             first_name,
             last_name,
             email,
             age,
-            // password //se encriptara despues...
+            cartId: createCart._id,
             password: createHash(password),
           };
           const result = await userModel.create(user);
@@ -97,8 +122,6 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         try {
           const user = await userModel.findOne({ email: username });
-          console.log("Usuario encontrado para login:");
-          console.log(user);
           if (!user) {
             console.warn("User doesn't exists with username: " + username);
             return done(null, false);
@@ -114,6 +137,18 @@ const initializePassport = () => {
       }
     )
   );
+
+  //Estrategia para desencriptar el JWT
+  passport.use("JWT", new JWTStrategy(
+    {
+      jwtFromRequest: extractJWT.fromExtractors([cookieExtractor]),
+      secretOrKey: config.tokenKey
+    },
+    async(jwt_payload, done)=>{
+      console.log('Descriptando el usuario',jwt_payload);
+      return done(null, jwt_payload.user)
+    }
+  ))
 
   //Funciones de Serializacion y Desserializacion
   passport.serializeUser((user, done) => {

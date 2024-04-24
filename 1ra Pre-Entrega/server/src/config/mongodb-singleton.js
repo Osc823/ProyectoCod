@@ -21,7 +21,10 @@ export default class MongoSingleton {
 
     #connectMongoDB = async () => {
         try {
-            await mongoose.connect(config.mongoUrl);
+            await mongoose.connect(config.mongoUrl, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
             console.log("Conectado con exito a MongoDB usando Moongose.");
 
         } catch (error) {

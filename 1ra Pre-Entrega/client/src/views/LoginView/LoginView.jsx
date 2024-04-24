@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import fondo from "../../assets/fondo.jpg"
 import axios from "axios";
 
 const LoginView = () => {
@@ -21,27 +22,31 @@ const LoginView = () => {
     });
   };
 
+  const axiosConfig = axios.create({
+    withCredentials: true
+  })
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/api/sessions/login", form);
+      const response = await axiosConfig.post("/api/sessions/login",form);
       console.log("Aquí está la respuesta:", response);
 
       if (response.data.status === "success") {
         localStorage.setItem("userId", response.data.payload.id); // Actualiza infoUser con los datos del usuario
         localStorage.setItem("userEmail", response.data.payload.email)
-        setTimeout(() => {
-          navigate("/home");
-        }, 1500);
+        navigate("/home");
+     
       }
     } catch (error) {
+      console.log('ERROR ', error);
       setError(error.message);
     }
   };
 
   return (
-    <div style={{ backgroundColor: "#f4f4f4", height: "100vh" }}>
+    <div style={{ backgroundImage: `url(${fondo})`, backgroundSize: "cover", backgroundPosition: "center", height: "100vh" }}>
       <div className="container d-flex align-items-center justify-content-center">
         <div
           className="col-md-4"
