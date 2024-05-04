@@ -1,0 +1,39 @@
+.container{
+    display: flex;
+    justify-content: center;
+}
+.button{
+    color: white;
+    background-color:rgb(34, 59, 139);
+    width: 250px;
+    border: none;
+    margin: 15px;
+    border-radius: 15px;
+    height: 40px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425);
+  }
+.search{
+    color: white;
+    background-color: rgb(34, 59, 139);
+    width: 250px;
+    border: none;
+    margin: 15px;
+    border-radius: 15px;
+    text-align: center;
+    height: 40px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425);
+  }
+.search::placeholder {
+    color: white; /* Cambia el color del placeholder a blanco */
+  }
+.select{
+    color: white;
+    background-color: rgb(34, 59, 139);
+    width: 250px;
+    border: none;
+    margin: 15px;
+    text-align: center;
+    border-radius: 15px;
+    height: 40px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425);
+  }

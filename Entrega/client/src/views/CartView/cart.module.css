@@ -1,0 +1,94 @@
+.content {
+    display: flex;
+    flex-direction: column; /* Cambiado a column */
+    align-items: center; /* Para centrar verticalmente */
+    margin-bottom: 3rem;
+  }
+  .textTitle {
+    margin-top: 2rem;
+    text-align: center;
+    font-weight: 900;
+    font-size: 3.3em;
+    line-height: 1.5;
+  }
+  
+.tableStyle {
+  width: 80%;
+  margin: 20px;
+  border-collapse: collapse;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425);
+}
+
+.thStyle {
+  background-color: #f2f2f2;
+  padding: 25px;
+
+}
+
+.tdStyle {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+.btnDelete{
+  color: white;
+  background-color: rgb(139, 34, 34);
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  height: 40px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425);
+}
+.btnPago{
+    background-color: #1f1972; /* Color rojo */
+    border: 3px solid white;
+    color: white;
+    padding: 7px;
+    border-radius: 15px;
+}
+.totalBox {
+  position: fixed;
+  top: 15%; /* Opcional: puedes ajustar la posición vertical */
+  left: 75%; /* Opcional: puedes ajustar la posición horizontal */
+  margin: 15px;
+  padding: 15px;
+  width: 300px;
+  border-radius: 10px;
+  height: 290px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425); /* Ajusta los valores según desees */
+}
+.imagen{
+  display: flex;
+  justify-content: center;
+}
+.imagenPago{
+  width: 250px;
+  border-radius: 10px;
+  height: 150px;
+}
+.total{
+  padding: 10px;
+}
+.button{
+  color: white;
+  background-color: forestgreen;
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  height: 40px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425);
+}
+.button2{
+  margin: 5px;
+  color: white;
+  background-color: forestgreen;
+  width: 30%;
+  border: none;
+  border-radius: 15px;
+  height: 40px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.425);
+}
+
+
