@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import fondo from "../../assets/fondo.jpg"
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 const LoginView = () => {
   const navigate = useNavigate();
-
+  const [allUsers, setAllUsers] = useState()
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -28,8 +29,30 @@ const LoginView = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log('Users', allUsers);
     try {
+      const existUser = allUsers.find((user) => user.email === form.email)
+
+      if (!existUser) {
+        // Muestra un SweetAlert para indicar que el usuario no se encuentra registrado
+        Swal.fire({
+          icon: 'error',
+          title: 'Usuario no registrado',
+          text: 'El usuario no se encuentra registrado en el sistema',
+        })
+        return
+      }
+
+      if (existUser.hide == false) {
+        // Muestra un SweetAlert para indicar que el usuario está suspendido
+        Swal.fire({
+          icon: 'error',
+          title: 'Usuario suspendido',
+          text: 'El usuario se encuentra suspendido',
+        })
+        return
+      }
+      
       const response = await axiosConfig.post("/api/sessions/login",form);
       console.log("Aquí está la respuesta:", response);
 
@@ -38,6 +61,7 @@ const LoginView = () => {
         localStorage.setItem("userEmail", response.data.payload.email)
         localStorage.setItem("carrito", response.data.payload.cartId.products.length)
         localStorage.setItem("cartId", response.data.payload.cartId._id)
+        localStorage.setItem("cartProducts", response.data.payload.cartId.products)
         navigate("/home");
      
       }
@@ -46,6 +70,21 @@ const LoginView = () => {
       setError(error.message);
     }
   };
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const response = await axiosConfig.get("/users/allUsers/");
+        setAllUsers(response.data.payload); // Asumiendo que response contiene los datos de los usuarios
+      } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        // Aquí puedes manejar el error si lo deseas
+      }
+    };
+  
+    fetchAllUsers();
+  }, [allUsers]);
+  
 
   return (
     <div style={{ backgroundImage: `url(${fondo})`, backgroundSize: "cover", backgroundPosition: "center", height: "100vh" }}>

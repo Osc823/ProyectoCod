@@ -10,7 +10,7 @@ var options = {
 };
 
 var data = {
-    labels: ['Carne', 'Jamón', 'Dulces', 'Turrón', 'Vino'],
+    labels: ['NIKE AIR MAX', 'NIKE GOFLYES', 'NIKE DUNK LUNK', 'NIKE AIR MAX PLUS', 'NIKE P-6000'],
     datasets: [
         {
             label: 'Popularidad en Navidad',

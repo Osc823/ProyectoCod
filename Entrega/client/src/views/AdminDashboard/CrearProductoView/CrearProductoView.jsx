@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { showSuccessNotification } from '../../../utils/Toast';
 
 const CrearProductoView = () => {
   const [formData, setFormData] = useState({
@@ -22,12 +23,31 @@ const CrearProductoView = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = axiosConfig.post('/api/products', formData)
-    console.log('res', response);
-    console.log('Datos del nuevo producto:', formData);
+    try {
+      const response = await axiosConfig.post('/api/products', formData);
+      console.log('Rtaaa', response);
+      if (response.status === 200) {
+        setFormData({
+          title: '',
+          description: '',
+          price: '',
+          thumbnail: '',
+          code: '',
+          stock: '',
+          marca: '',
+          userId: '',
+        });
+        showSuccessNotification('Producto creado con exito!!')
+      }
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+      // Aquí podrías mostrar una notificación de error si lo deseas
+    }
   };
+  
+
   useEffect(()=>{
     const userId = localStorage.getItem('userId')
     formData.userId = userId;
@@ -44,6 +64,7 @@ const CrearProductoView = () => {
             name="title"
             value={formData.title}
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
@@ -55,6 +76,7 @@ const CrearProductoView = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
@@ -65,6 +87,7 @@ const CrearProductoView = () => {
             name="price"
             value={formData.price}
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
@@ -75,6 +98,7 @@ const CrearProductoView = () => {
             name="thumbnail"
             value={formData.thumbnail}
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
@@ -85,6 +109,7 @@ const CrearProductoView = () => {
             name="code"
             value={formData.code}
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
@@ -95,6 +120,7 @@ const CrearProductoView = () => {
             name="stock"
             value={formData.stock}
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
@@ -105,6 +131,7 @@ const CrearProductoView = () => {
             name="marca"
             value={formData.marca}
             onChange={handleChange}
+            required
           >
             <option value="">Selecciona una marca</option>
             <option value="Nike">Nike</option>

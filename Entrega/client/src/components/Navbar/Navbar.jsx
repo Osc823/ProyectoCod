@@ -18,6 +18,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("userEmail"); // Elimina el elemento del localStorage
     localStorage.removeItem("userId");
+    localStorage.removeItem("cartProducts")
     navigate("/");
   };
   const axiosConfig = axios.create({ withCredentials: true });

@@ -1,0 +1,303 @@
+paths:
+  /users/allUsers/:
+    get:
+      summary: Obtiene todos los usuarios de la App.
+      tags: 
+        - Users
+      responses:
+        "200":
+          description: respuesta exitosa! se retorna un arreglo con los usuarios.
+          content:  
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/User'
+        "400":
+          description: Se envio un dato no valido.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+  
+  /users/byEmail/{email}:
+    get:
+      summary: Obtiene un usuario por su dirección de correo electrónico.
+      tags:
+        - Users
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Correo electrónico del usuario que se desea buscar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Respuesta exitosa. Retorna el usuario correspondiente al correo electrónico proporcionado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Se envió un dato no válido.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /users/delete/{id}:
+    delete:
+      summary: Elimina un usuario por su ID.
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario que se desea eliminar.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Usuario eliminado correctamente.
+        "404":
+          description: No se encontró ningún usuario con el ID proporcionado.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /users/sleep/{id}:
+    patch:
+      summary: Suspende a un usuario por su ID.
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario que se desea suspender.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario suspendido correctamente.
+        "404":
+          description: No se encontró ningún usuario con el ID proporcionado.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /users/restore/{id}:
+      patch:
+        summary: Restaura un usuario suspendido por su ID.
+        tags:
+          - Users
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID del usuario que se desea restaurar.
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Usuario restaurado correctamente.
+          "404":
+            description: No se encontró ningún usuario con el ID proporcionado.
+          "500":
+            description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /users/admin/{id}:
+      patch:
+        summary: Otorga permisos de administrador a un usuario por su ID.
+        tags:
+          - Users
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID del usuario al que se le desean otorgar permisos de administrador.
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Permisos de administrador otorgados correctamente.
+          "404":
+            description: No se encontró ningún usuario con el ID proporcionado.
+          "500":
+            description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /users/noadmin/{id}:
+      patch:
+        summary: Revoca permisos de administrador a un usuario por su ID.
+        tags:
+          - Users
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID del usuario al que se le desean revocar los permisos de administrador.
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Permisos de administrador revocados correctamente.
+          "404":
+            description: No se encontró ningún usuario con el ID proporcionado.
+          "500":
+            description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /users/userPremiun/{id}:
+      patch:
+        summary: Otorga permisos de usuario premium a un usuario por su ID.
+        tags:
+          - Users
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID del usuario al que se le desean otorgar permisos de usuario premium.
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Permisos de usuario premium otorgados correctamente.
+          "404":
+            description: No se encontró ningún usuario con el ID proporcionado.
+          "500":
+            description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /users/userNoPremiun/{id}:
+      patch:
+        summary: Revoca permisos de usuario premium a un usuario por su ID.
+        tags:
+          - Users
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID del usuario al que se le desean revocar los permisos de usuario premium.
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Permisos de usuario premium revocados correctamente.
+          "404":
+            description: No se encontró ningún usuario con el ID proporcionado.
+          "500":
+            description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /api/sessions/register:
+    post:
+      summary: Registra un nuevo usuario.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: Usuario registrado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "401":
+          description: Error de autenticación en el registro.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+  /api/sessions/login:
+    post:
+      summary: Inicia sesión con las credenciales proporcionadas.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Correo electrónico del usuario.
+                password:
+                  type: string
+                  description: Contraseña del usuario.
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Sesión iniciada correctamente.
+          headers:
+            Authorization:
+              schema:
+                type: string
+                description: Token de acceso JWT.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "401":
+          description: Error de autenticación en el inicio de sesión.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+    
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id: 
+          type: string
+          description: Id autogenerado de Mongo.
+        first_name: 
+          type: string
+          description: nombre del usuario
+        last_name: 
+          type: string
+          description: apellido del usuario
+        email: 
+          type: string
+          description: email del usuario
+        age: 
+          type: integer
+          description: edad del usuario
+        password: 
+          type: string
+          description: password del usuario
+        loggedBy: 
+          type: string
+          description: método de inicio de sesión del usuario
+        role: 
+          type: string
+          enum: [user, premium, admin]
+          description: rol del usuario
+          default: user
+        hide: 
+          type: boolean
+          description: indica si el usuario está oculto o no
+          default: true
+        cartId: 
+          type: string
+          description: ID del carrito asociado al usuario
+        created_at: 
+          type: string
+          format: date-time
+          description: fecha de creación del usuario
+          
+      example:
+        _id: "655eacde18d63f2d8e18f8c5"
+        first_name: "Usuario de prueba 1"
+        last_name: "Apellido de prueba 1"
+        email: "correodeprueba1@gmail.com"
+        age: 30
+        password: "$2b$10$jo8EM4kblYt2BXI/K5t12OsScO6fTAgjlMFxLJVAnWO6xn4tmd7T2"
+        loggedBy: "Google"
+        role: "user"
+        hide: false
+        cartId: "6121eab34f9e4e2bf4c9405a"
+        created_at: "2024-05-07T12:00:00Z"
+

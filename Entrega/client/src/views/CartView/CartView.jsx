@@ -21,26 +21,31 @@ const CartView = () => {
   const handlePayment = async () => {
     try {
       const stripe = await stripePromise;
-
+  
       const body = {
         products: infoCart.products
       };
-
+  
       const response = await axiosConfig.post('/api/payments/create-checkout-session', body);
   
       console.log(response.data.id);
-
+  
       const result = await stripe.redirectToCheckout({
         sessionId: response.data.id
       });
-
+  
       if (result.error) {
         console.log(result.error);
+      } else {
+        // Vaciar el carrito después de la compra exitosa
+        localStorage.setItem('cartProducts', JSON.stringify([]));
+        setLisCart([]);
       }
     } catch (error) {
       console.error("Error al procesar el pago:", error);
     }
   };
+  
   
 
   useEffect(() => {
@@ -152,7 +157,8 @@ const CartView = () => {
               </tr>
             </thead>
             <tbody>
-              {lisCart.map((ele, index) => (
+            {lisCart.length ? (
+              lisCart.map((ele, index) => (
                 <tr key={ele._id}>
                   <td className={style.tdStyle}>{index + 1}</td>
                   <td className={style.tdStyle}>
@@ -173,7 +179,7 @@ const CartView = () => {
                   </td>
                   <td className={style.tdStyle}>${ele.price}</td>
                   <td className={style.tdStyle}>
-                  ${(ele.price * ele.quantity).toFixed(2)}
+                    ${(ele.price * ele.quantity).toFixed(2)}
                   </td>{" "}
                   {/* Precio Total */}
                   <td className={style.tdStyle}>
@@ -185,7 +191,13 @@ const CartView = () => {
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7">No hay productos aún en el carrito</td>
+              </tr>
+            )}
+
             </tbody>
           </table>
         </div>

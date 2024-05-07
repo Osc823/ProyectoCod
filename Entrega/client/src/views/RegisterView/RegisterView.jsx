@@ -2,6 +2,7 @@ import {useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import fondo from "../../assets/fondo.jpg"
 import axios from "axios";
+import style from "./register.module.css"
 
 const RegisterView = () => {
   const navigate = useNavigate();
@@ -54,10 +55,12 @@ const RegisterView = () => {
     }
   };
 
+
   return (
     <div style={{ backgroundImage: `url(${fondo})`, backgroundSize: "cover", backgroundPosition: "center", height: "100%" }}>
-      <Link to="/" style={{ textDecorationLine: "none" }}>
-        ⬅️ VOLVER
+      
+      <Link to="/" className={style.button}>
+        VOLVER
       </Link>
       <div className="container d-flex align-items-center justify-content-center">
         <div

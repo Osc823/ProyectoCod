@@ -11,10 +11,13 @@ import AdminDashboard from './views/AdminDashboard/AdminDashboard'
 import UserDashboard from './views/UserDashboard/UserDashnoard'
 import CartView from './views/CartView/CartView'
 import { useEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { CartProvider } from './context/CartContext'
 import ProductosView from './views/ProductView/ProductView'
 import CategoriaView from './views/CategoriaView/CategoriaView'
-
+import Success from './views/Success/Success'
+import Cancelled from './views/Success/Success'
 
 
 function App() {
@@ -41,6 +44,7 @@ function App() {
   return (
     <>
     <CartProvider>
+    <ToastContainer position="bottom-right"></ToastContainer>
       <Routes>
         <Route path="/home" element={<><Navbar infoCart={infoCart}/><HomeView userId={userIdFromLocalStorage}/><Footer/></>}/>
         <Route path="/" element={<LoginView />}/>
@@ -50,6 +54,8 @@ function App() {
         <Route path='/userDashboard' element={<UserDashboard/>}/>
         <Route path='/productos' element={<><Navbar infoCart={infoCart}/><ProductosView/><Footer/></>}/>
         <Route path='/categoria' element={<><Navbar infoCart={infoCart}/><CategoriaView/><Footer/></>}/>
+        <Route path="/success" element={<><Success/> </>}/>
+        <Route path="/cancelled" element={<><Cancelled/></>}/>
       </Routes>
       </CartProvider>
     </>

@@ -19,7 +19,7 @@ router.use("/api/products", routerProducts);
 //Rutas de Mockingproducts con Faker
 router.use("/mockingproducts", getProductsByFaker);
 
-// Rutas accesibles solo por usuarios
+
 router.use("/api/carts", routerCarts);
 router.use("/api/messages", isUser, routerMessages);
 router.use("/users", routerUsers);

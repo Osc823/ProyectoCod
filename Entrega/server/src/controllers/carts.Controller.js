@@ -2,7 +2,6 @@
 // import cartsService from "../services/factory.js";
 
 //Repository
-import { cartModel } from "../services/models/cart.model.js";
 import { productModel } from "../services/models/product.model.js";
 import PaymentService from "../services/payment.js";
 import { cartsService, ticketService } from "../services/service.js";
@@ -87,18 +86,7 @@ const purchaseCart = async (req, res, next) => {
   }
 };
 
-const postCart = async (req, res) => {
-  try {
-    const newCart = await cartsService.createCart();
-    res.json({
-      message: "Nuevo carrito creado con éxito",
-      cart: newCart,
-    });
-  } catch (error) {
-    req.logger.error("Error al crear un carrito:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
+
 const cartById = async (req, res) => {
   const { cid } = req.params;
   try {
@@ -139,10 +127,8 @@ const decreaseProduct = async (req, res) => {
 
 const addProductCart = async (req, res) => {
   const { pid } = req.params;
-
   const { cartId, id} = req.user;
-
-
+  
   try {
     if (cartId && pid) {
       const response = await cartsService.addToCart(cartId._id, pid, id);
@@ -153,7 +139,6 @@ const addProductCart = async (req, res) => {
   } catch (error) {
     req.logger.error(`Error al agregar producto al carrito ${cartId}:`, error);
     res.status(500).json({ error: error.message });
-    console.log('sisisi',error);
   }
 };
 
@@ -196,7 +181,6 @@ const deleteProducInCart = async (req, res) => {
 };
 
 export {
-  postCart,
   cartById,
   addProductCart,
   purchaseCart,

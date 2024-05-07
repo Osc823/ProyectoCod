@@ -9,9 +9,12 @@ import productDao from "./services/daos/mongo/product.dao.js";
 import Handlebars from "handlebars";
 import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
 import config from "./config/config.js";
-import MongoStore from 'connect-mongo'
-import session from 'express-session'
+// import MongoStore from 'connect-mongo'
+// import session from 'express-session'
 import MongoSingleton from './config/mongodb-singleton.js';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUIExpress from 'swagger-ui-express'
+
 
 
 // Passport Imports
@@ -106,26 +109,6 @@ app.set("views", `${__dirname}/views`);
 app.use(express.static(`${__dirname}/public`));
 
 
-// Configuracion de Session
-// app.use(session(
-//   {
-
-//       // Usando --> connect-mongo
-//       store: MongoStore.create({
-//           mongoUrl: MONGO_URL,
-//           //mongoOptions --> opciones de confi para el save de las sessions
-//           mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-//           ttl: 10 * 60
-//       }),
-
-//       secret: "coderS3cr3t",
-//       resave: false, // guarda en memoria
-//       saveUninitialized: true //lo guarda a penas se crea
-//   }
-// ))
-
-// Middleware de passport
-
 initializePassport();
 app.use(passport.initialize());
 // app.use(passport.session());
@@ -133,6 +116,8 @@ app.use(passport.initialize());
 //Rutas
 // **Logger
 app.use(addLogger);
+
+
 // Manejo de errores
 app.use((err, req, res, next) => {
   req.logger.error(err.stack);
@@ -141,8 +126,23 @@ app.use((err, req, res, next) => {
 
 app.use(router);
 
+const swaggerOptions = {
+  definition: {
+      openapi: "3.0.1",
+      info: {
+          title: "Documentacion API Adopme",
+          description: "Documentacion para uso de swagger"
+      }
+  },
+  apis: [`./src/docs/**/*.yaml`]
+}
 
-const productsSer = new productDao();
+const specs = swaggerJSDoc(swaggerOptions)
+// Declaramos la Api donde vamos a tener la parte grafica
+app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
+
+
+// const productsSer = new productDao();
 //Socket communication
 // io.on("connection", async (socket) => {
 //   req.logger.info("Nuevo cliente conectado");

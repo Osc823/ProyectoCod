@@ -106,8 +106,6 @@ const UsuariosList = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // Realiza la acción para cambiar el rol a admin aquí
-          setRefresh(!refresh);
           const response = await axiosConfig.patch(`/users/admin/${id}`);
           if (response.status ==200) {
             showSuccessNotification("Rol cambiado con éxito a admin.");
@@ -215,7 +213,7 @@ const UsuariosList = () => {
             allUsers?.map((ele, index) => (
               <tr key={index}>
                 <th
-                  style={{ backgroundColor: !ele.hide ? "#edd55e" : "#9bdb92" }}
+                  style={{ backgroundColor: ele.hide ?  "#9bdb92" : "#edd55e" }}
                   scope="row"
                 >
                   {index + 1}
@@ -223,19 +221,19 @@ const UsuariosList = () => {
 
                 {/* Nombre Completo */}
                 <td
-                  style={{ backgroundColor: !ele.hide ? "#edd55e" : "#9bdb92" }}
+                  style={{ backgroundColor: ele.hide ?  "#9bdb92" : "#edd55e" }}
                 >
                   {ele.first_name}
                 </td>
                 {/* Email */}
                 <td
-                  style={{ backgroundColor: !ele.hide ? "#edd55e" : "#9bdb92" }}
+                  style={{ backgroundColor: ele.hide ?  "#9bdb92" : "#edd55e" }}
                 >
                   {ele.email}
                 </td>
                 {/* Tipo Usuario */}
                 <td
-                  style={{ backgroundColor: !ele.hide ? "#edd55e" : "#9bdb92" }}
+                  style={{ backgroundColor: ele.hide ?  "#9bdb92" : "#edd55e" }}
                 >
                   {ele.role == "user" ? (
                     <button type="button" className="btn btn-success" disabled>
@@ -284,7 +282,7 @@ const UsuariosList = () => {
                 </td>
                 {/* Rol */}
                 <td
-                  style={{ backgroundColor: !ele.hide ? "#edd55e" : "#9bdb92" }}
+                  style={{ backgroundColor: ele.hide ?  "#9bdb92" : "#edd55e" }}
                 >
                   {ele.role !== "admin" && (
                     <button
@@ -349,7 +347,7 @@ const UsuariosList = () => {
                 {/* Acciones */}
                 <td
                   style={{
-                    backgroundColor: !ele.hide ? "#edd55e" : "#9bdb92",
+                    backgroundColor: ele.hide ?  "#9bdb92" : "#edd55e",
                     width: "150px",
                   }}
                 >

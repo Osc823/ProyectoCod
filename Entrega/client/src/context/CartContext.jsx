@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import {showSuccessNotification, showErrorNotification} from "../utils/Toast"
 
 const CartContext = createContext();
 
@@ -18,21 +19,24 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (_id) => {
     try {
       await axiosConfig.post(`/api/carts/product/${_id}`);
-      console.log("Producto agregado al carrito exitosamente");
+      showSuccessNotification('¡Se añadió al carrito con éxito!')
+
       setRefresh(!refresh);
       // Actualizar información del carrito después de agregar un producto
       fetchCartInfo();
     } catch (error) {
       console.error("Error al agregar el producto al carrito:", error);
+      showErrorNotification("Error al agregar el producto al carrito:")
     }
   };
 
   const removeProduct = async (idProduct) => {
     try {
       await axiosConfig.delete(
-        `/api/carts/product/${idProduct}`
+        `/api/carts/product/${idProduct}/delete`
       );
       setRefresh(!refresh);
+      showSuccessNotification('¡Se elimino del carrito con éxito!')
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }

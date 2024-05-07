@@ -10,8 +10,8 @@ routerProducts.get("/:pid", productById);
 
 routerProducts.post("/", passportCall("JWT"), authorization(["premium","admin"]), createNewProduct);
 
-routerProducts.put("/:pid",passportCall("JWT"), authorization(["premium"]), updateProductById);
+routerProducts.put("/:pid/update",passportCall("JWT"), authorization(["premium"]), updateProductById);
 
-routerProducts.delete("/:pid",passportCall("JWT"), authorization(["premium"]), deleteProductById);
+routerProducts.delete("/:pid/delete",passportCall("JWT"), authorization(["premium"]), deleteProductById);
 
 export default routerProducts;

@@ -1,0 +1,238 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los productos del usuario.
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Respuesta exitosa. Retorna todos los productos del usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartProduct'
+        "401":
+          description: No autorizado para acceder a los productos del usuario.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+  
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene información de un carrito por su ID.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que se desea solicitar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Respuesta exitosa. Retorna la información del carrito correspondiente al ID proporcionado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: No se encontró ningún carrito con el ID proporcionado.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+  
+  /api/carts/product/{pid}:
+    post:
+      summary: Agrega un producto a un carrito por su ID.
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se desea agregar al carrito.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  description: Cantidad del producto a agregar al carrito.
+                  minimum: 1
+                  default: 1
+              required:
+                - quantity
+      responses:
+        "200":
+          description: Producto agregado correctamente al carrito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "401":
+          description: No autorizado para agregar productos al carrito.
+        "404":
+          description: No se encontró ningún producto con el ID proporcionado.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+  
+  /api/carts/product/{pid}/decrease:
+    patch:
+      summary: Disminuye la cantidad de un producto en el carrito por su ID.
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto del carrito que se desea disminuir.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cantidad de producto disminuida correctamente en el carrito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "401":
+          description: No autorizado para disminuir la cantidad de productos en el carrito.
+        "404":
+          description: No se encontró ningún producto con el ID proporcionado.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+  
+  /api/carts/purchase:
+    post:
+      summary: Finaliza la compra de un carrito.
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Compra finalizada correctamente.
+        "401":
+          description: No autorizado para finalizar la compra del carrito.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+  
+  /api/carts/product/{pid}/delete:
+    delete:
+      summary: Elimina un producto del carrito por su ID.
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto del carrito que se desea eliminar.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Producto eliminado correctamente del carrito.
+        "401":
+          description: No autorizado para eliminar productos del carrito.
+        "404":
+          description: No se encontró ningún producto con el ID proporcionado.
+        "500":
+          description: Error inesperado en el servidor, no se pudo manejar el proceso.
+
+components:
+  schemas:
+    CartProduct:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado del producto en el carrito.
+        product:
+          type: object
+          description: Producto en el carrito.
+          properties:
+            _id:
+              type: string
+              description: ID del producto.
+            title:
+              type: string
+              description: Título del producto.
+            description:
+              type: string
+              description: Descripción del producto.
+            price:
+              type: number
+              description: Precio del producto.
+            thumbnail:
+              type: string
+              description: URL de la imagen en miniatura del producto.
+            code:
+              type: string
+              description: Código del producto.
+            stock:
+              type: integer
+              description: Cantidad disponible en stock del producto.
+            marca:
+              type: string
+              enum: [Nike, Adidas, Puma]
+              description: Marca del producto.
+        quantity:
+          type: integer
+          description: Cantidad del producto en el carrito.
+      example:
+        _id: "6097a2ac6d33a60015b50a50"
+        product:
+          _id: "6097a2ac6d33a60015b50a51"
+          title: Zapatos deportivos
+          description: Zapatos ideales para correr.
+          price: 59.99
+          thumbnail: https://example.com/thumbnail.jpg
+          code: ZP123
+          stock: 100
+          marca: Nike
+        quantity: 2
+
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado del carrito.
+        products:
+          type: array
+          description: Lista de productos en el carrito.
+          items:
+            $ref: '#/components/schemas/CartProduct'
+        userId:
+          type: string
+          description: ID del usuario asociado al carrito.
+      example:
+        _id: "6097a2ac6d33a60015b50a50"
+        products:
+          - _id: "6097a2ac6d33a60015b50a51"
+            product:
+              _id: "6097a2ac6d33a60015b50a52"
+              title: Zapatos deportivos
+              description: Zapatos ideales para correr.
+              price: 59.99
+              thumbnail: https://example.com/thumbnail.jpg
+              code: ZP123
+              stock: 100
+              marca: Nike
+            quantity: 2
+          - _id: "6097a2ac6d33a60015b50a53"
+            product:
+              _id: "6097a2ac6d33a60015b50a54"
+              title: Camiseta deportiva
+              description: Camiseta cómoda para hacer ejercicio.
+              price: 29.99
+              thumbnail: https://example.com/thumbnail.jpg
+              code: CM101
+              stock: 50
+              marca: Adidas
+            quantity: 1
+        userId: "6097a2ac6d33a60015b50a55"

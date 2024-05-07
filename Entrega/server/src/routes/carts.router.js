@@ -1,15 +1,10 @@
 import { Router } from "express";
-import { cartById, postCart, addProductCart, purchaseCart, getAllProductsByUser, deleteProducInCart, decreaseProduct } from "../controllers/carts.Controller.js";
-// import { userModel } from "../services/models/user.model.js";
-import { cartModel } from "../services/models/cart.model.js";
+import { cartById , addProductCart, purchaseCart, getAllProductsByUser, deleteProducInCart, decreaseProduct } from "../controllers/carts.Controller.js";
 import { passportCall } from "../dirname.js";
 
 const routerCarts = Router();
 
-// Crear un nuevo carrito para usuario registrado en la bd
-routerCarts.post("/",passportCall("JWT"), postCart);
-
-
+// Obtener todos los productos del usuario
 routerCarts.get("/",passportCall("JWT"), getAllProductsByUser)
 
 // Obtener información de un carrito por su ID
@@ -25,7 +20,7 @@ routerCarts.patch("/product/:pid/decrease",passportCall("JWT"),decreaseProduct)
 routerCarts.post('/purchase',passportCall("JWT"), purchaseCart);
 
 // Eliminar un producto del carrito por su ID
-routerCarts.delete("/product/:pid/",passportCall("JWT"), deleteProducInCart);
+routerCarts.delete("/product/:pid/delete",passportCall("JWT"), deleteProducInCart);
 
 
 export default routerCarts;
